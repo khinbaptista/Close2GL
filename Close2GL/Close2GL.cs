@@ -22,7 +22,11 @@ namespace Close2GL
         private FrontFaceDirection face;
 
         private bool begun;
-        private List<Vector4> primitive;
+        private PrimitiveType mode;
+
+        private List<Vector4> vertices;
+        private List<Vector4> normals;
+        private List<Vector2> textureCoordinates;
 
         public Matrix4 Modelview {
             get { return modelview; }
@@ -68,6 +72,7 @@ namespace Close2GL
             cameraDirection = (target - eye).Normalized();
         }
 
+        #region Basic Geometric Transformations
         public void Translate(Vector3 translation) {
             Matrix4 T = Matrix4.Identity;
 
@@ -113,6 +118,7 @@ namespace Close2GL
 
             modelview *= S;
         }
+        #endregion
 
         public void BackfaceCulling(bool value, FrontFaceDirection face = FrontFaceDirection.Cw) {
             culling = value;
@@ -161,47 +167,32 @@ namespace Close2GL
         }
 
         public void Begin(PrimitiveType rendermode) {
+            if (begun) throw new Exception("Tried to call Begin() a second time before calling End().");
             begun = true;
 
-            if (rendermode == PrimitiveType.Triangles)
-                primitive = new List<Vector4>(3);
-            else if (rendermode == PrimitiveType.Points)
-                primitive = new List<Vector4>(1);
+            mode = rendermode;
 
-            GL.MatrixMode(MatrixMode.Projection); GL.LoadIdentity();
+            //primitive = (mode == PrimitiveType.Triangles) ? new List<Vector4>(3) : new List<Vector4>(1);
+            vertices = new List<Vector4>();
+            normals = new List<Vector4>();
+            textureCoordinates = new List<Vector2>();
+
+            /*GL.MatrixMode(MatrixMode.Projection); GL.LoadIdentity();
             GL.MatrixMode(MatrixMode.Modelview); GL.LoadIdentity();
 
-            GL.Begin(rendermode);
+            GL.Begin(rendermode);*/
         }
 
         public void Vertex(Vector3 vertex) {
-            if (!begun) return;
+            if (!begun) throw new Exception("Tried to load vertex before call to Begin()");
 
             Vector4 vh = new Vector4(vertex, 1);
+            vertices.Add(vh);
+            /*
             primitive.Add(vh);
 
             if (primitive.Count == primitive.Capacity) {
                 bool discard = false;
-
-                if (culling && primitive.Capacity >= 3) {
-                    Vector3 normal = Vector3.Zero;
-                    Vector3 edge1 = Vector3.Zero;
-                    Vector3 edge2 = Vector3.Zero;
-
-                    if (face == FrontFaceDirection.Cw){
-                        edge1 = new Vector3(primitive[1] - primitive[0]);
-                        edge2 = new Vector3(primitive[2] - primitive[0]);
-                    }
-                    else if (face == FrontFaceDirection.Ccw) {
-                        edge1 = new Vector3(primitive[2] - primitive[0]);
-                        edge2 = new Vector3(primitive[1] - primitive[0]);
-                    }
-
-                    normal = Vector3.Cross(edge1, edge2);
-                    normal.Normalize();
-                    if (Vector3.Dot(normal, cameraDirection) < 0)
-                        discard = true;
-                }
 
                 foreach (Vector4 v in primitive) {
                     if (discard) break;
@@ -218,26 +209,135 @@ namespace Close2GL
 
                     transformed = Vector4.Transform(transformed, viewport);
 
-                    if (!discard)
+                    if (!discard) {
                         GL.Vertex4(transformed);
+                    }
+                        
                 }
 
                 primitive = new List<Vector4>(primitive.Capacity);
-            }
+            }*/
 
         }
 
         public void Normal(Vector3 normal) {
-            if (!begun) return;
+            if (!begun) throw new Exception("Tried to load normal before call to Begin()");
 
             //
         }
 
+        public void TextureCoordinate(Vector2 textureCoordinate) {
+            if (!begun) throw new Exception("Tried to load texture coordinate before call to Begin()");
+        }
+
         public void End() {
-            GL.End();
+            if (!begun) throw new Exception("Tried to call End() before call to Begin()");
+
+            if (culling && mode == PrimitiveType.Triangles)
+                CullBackfaces();
+
+            TransformMVP();
+            SimpleClipping();
+            PerspectiveDivision();
+            MapToViewport();
+            Raster();
+
+            //GL.End();
             begun = false;
         }
 
+        #region New transformation methods
+
+        private void CullBackfaces() {
+            int index = 0;
+
+            Vector3 edge1;
+            Vector3 edge2;
+            Vector3 normal;
+
+            while (index + 2 <= vertices.Count - 1) {
+                edge1 = Vector3.Zero;
+                edge2 = Vector3.Zero;
+                normal = Vector3.Zero;
+
+                edge1 = (face == FrontFaceDirection.Cw) ?
+                        new Vector3(vertices[index + 1] - vertices[index]) :
+                        new Vector3(vertices[index + 2] - vertices[index]);
+
+                edge2 = (face == FrontFaceDirection.Cw) ?
+                        new Vector3(vertices[index + 2] - vertices[index]) :
+                        new Vector3(vertices[index + 1] - vertices[index]);
+
+                normal = Vector3.Cross(edge1, edge2).Normalized();
+
+                if (Vector3.Dot(normal, cameraDirection) < 0)
+                    DiscardFace(index);
+                else
+                    index += 3;
+                    
+            }
+        }
+
+        private void TransformMVP() {
+            for (int index = 0; index < vertices.Count; index++)
+                vertices[index] = Vector4.Transform(vertices[index], mvp);
+        }
+
+        private void SimpleClipping() {
+            int face = 0;
+
+            while (face + 2 < vertices.Count - 1) {
+                bool faceDiscarded = false;
+
+                for (int vertex = 0; vertex < 3; vertex++) {
+                    int index = face + vertex;
+                    if (vertices[index].X < -vertices[index].Z || vertices[index].X > vertices[index].Z ||
+                        vertices[index].Y < -vertices[index].Z || vertices[index].Y > vertices[index].Z ||
+                        vertices[index].Z < near || vertices[index].Z > far)
+
+                        faceDiscarded = true;
+                }
+
+                if (faceDiscarded)
+                    DiscardFace(face);
+                else
+                    face += 3;
+            }
+        }
+
+        private void PerspectiveDivision() {
+            for (int index = 0; index < vertices.Count; index++)
+                vertices[index] /= vertices[index].W;
+        }
+
+        private void MapToViewport() {
+
+        }
+
+        private void Raster() {
+            GL.MatrixMode(MatrixMode.Projection); GL.LoadIdentity();
+            GL.MatrixMode(MatrixMode.Modelview); GL.LoadIdentity();
+
+            GL.Begin(mode);
+            
+            foreach (Vector4 v in vertices)
+                GL.Vertex4(v);
+
+            GL.End();
+        }
+
+        private void DiscardFace(int startIndex) {
+            vertices.RemoveRange(startIndex, 3);
+            /*try { normals.RemoveRange(startIndex, 3); }
+            catch { }
+            try { textureCoordinates.RemoveRange(startIndex, 3); }
+            catch { }*/
+        }
+
+        #endregion
+
+
+        #region Old transformation functions
         public Vector3[] Transform(Vector3[] vertices) {
             Vector4[] vh = new Vector4[vertices.Length];
 
@@ -265,5 +365,7 @@ namespace Close2GL
 
             return transformed;
         }
+        #endregion
+
     }
 }
