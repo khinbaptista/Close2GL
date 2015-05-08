@@ -80,9 +80,14 @@ namespace Close2GL
 
             glControl2.MakeCurrent();
 
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+            GL.Ortho(0, glControl2.Width, 0, glControl2.Height, projNearZ, projFarZ);
+            GL.Viewport(0, 0, glControl2.Width, glControl2.Height);
+
             gl.Perspective(-1, 1, -1, 1, projNearZ, projFarZ);
             gl.Viewport(glControl2.Width, glControl2.Height);
-            GL.ClearColor(Color.Black);
+            //GL.ClearColor(Color.AliceBlue);
         }
 
         private void glControl1_Paint(object sender, PaintEventArgs e) {
@@ -121,15 +126,13 @@ namespace Close2GL
             glControl2.MakeCurrent();
             Matrix4 view = camera.ViewMatrix;
 
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-            GL.MatrixMode(MatrixMode.Modelview); GL.LoadIdentity();
+            //GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             gl.ResetModelview();
             gl.LookAt(camera.Position, camera.Target, camera.Up);
 
 
-            GL.Color3(meshColor);
+            gl.Color(meshColor);
             gl.Begin(mode);
 
             if (!meshLoaded) {
@@ -159,7 +162,11 @@ namespace Close2GL
 
             glControl2.MakeCurrent();
 
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+            GL.Ortho(0, glControl2.Width, 0, glControl2.Height, projNearZ, projFarZ);
             GL.Viewport(0, 0, glControl2.Width, glControl2.Height);
+
             gl.Viewport(glControl2.Width, glControl2.Height);
         }
 

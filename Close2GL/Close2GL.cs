@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -14,7 +15,7 @@ namespace Close2GL
         private Matrix4 projection;
         private Matrix4 mvp;
         private Matrix4 viewport;
-        private Vector2 viewportDimensions;
+        private int vpW, vpH;
 
         float left, right, top, bottom, near, far;
 
@@ -33,6 +34,8 @@ namespace Close2GL
 
         private bool hasNormals;
         private bool hasTexture;
+
+        private Vector3 drawColor;
 
         public Matrix4 Modelview {
             get { return modelview; }
@@ -54,6 +57,10 @@ namespace Close2GL
             viewport = Matrix4.Identity;
             mvp = Matrix4.Identity;
             begun = false;
+        }
+
+        public void Color(Vector3 color) {
+            drawColor = color;
         }
 
         public void ResetModelview() { modelview = Matrix4.Identity; }
@@ -158,7 +165,8 @@ namespace Close2GL
 
             viewport.Transpose();
 
-            viewportDimensions = new Vector2(width, height);
+            vpW = width;
+            vpH = height;
         }
 
         private void UpdateMVP() {
@@ -286,15 +294,15 @@ namespace Close2GL
         }
 
         private void Raster() {
-            GL.MatrixMode(MatrixMode.Projection); GL.LoadIdentity();
             GL.MatrixMode(MatrixMode.Modelview); GL.LoadIdentity();
-
-            GL.Begin(mode);
             
-            foreach (Vector4 v in vertices)
-                GL.Vertex4(v);
+            Vector3[] colorBuffer = new Vector3[vpW * vpH];
 
-            GL.End();
+            foreach (Vector4 v in inViewport)
+                colorBuffer[(int)(vpW * (Math.Round(v.Y) - 1) + Math.Round(v.X))] = drawColor;
+
+            GL.PixelStore(PixelStoreParameter.PackAlignment, 0);
+            GL.DrawPixels<Vector3>(vpW, vpH, PixelFormat.Rgb, PixelType.Float, colorBuffer);
         }
 
         private void DiscardFace(int startIndex) {
