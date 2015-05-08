@@ -79,16 +79,14 @@ namespace Close2GL
             loadedClose2GL = true;
 
             glControl2.MakeCurrent();
-            //SetProjection(glControl2);
 
             gl.Perspective(-1, 1, -1, 1, projNearZ, projFarZ);
+            gl.Viewport(glControl2.Width, glControl2.Height);
             GL.ClearColor(Color.Black);
         }
 
         private void glControl1_Paint(object sender, PaintEventArgs e) {
             if (!loadedOpenGL) return;
-            
-            //if (inputing) HandleInput();
 
             glControl1.MakeCurrent();
             Matrix4 view = camera.ViewMatrix;
@@ -102,9 +100,9 @@ namespace Close2GL
             GL.Color3(meshColor);
             GL.Begin(mode);
             if (!meshLoaded) {
-                GL.Vertex3(-10.0f, -10.0f, -10.0f);
-                GL.Vertex3(0.0f, 5.0f, -10.0f);
-                GL.Vertex3(10.0f, -10.0f, -10.0f);
+                GL.Vertex3(-10.0f, -10.0f, 0.0f);
+                GL.Vertex3(0.0f, 5.0f, 0.0f);
+                GL.Vertex3(10.0f, -10.0f, 0.0f);
             }
             else {
                 mesh.Render();
@@ -125,7 +123,7 @@ namespace Close2GL
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            GL.MatrixMode(MatrixMode.Modelview); GL.LoadIdentity(); GL.MultMatrix(ref view);
+            GL.MatrixMode(MatrixMode.Modelview); GL.LoadIdentity();
 
             gl.ResetModelview();
             gl.LookAt(camera.Position, camera.Target, camera.Up);
@@ -135,9 +133,9 @@ namespace Close2GL
             gl.Begin(mode);
 
             if (!meshLoaded) {
-                gl.Vertex(new Vector3(-10.0f, -10.0f, -10.0f));
-                gl.Vertex(new Vector3(0.0f, 5.0f, -10.0f));
-                gl.Vertex(new Vector3(10.0f, -10.0f, -10.0f));
+                gl.Vertex(new Vector3(-10.0f, -10.0f, 0.0f));
+                gl.Vertex(new Vector3(0.0f, 5.0f, 0.0f));
+                gl.Vertex(new Vector3(10.0f, -10.0f, 0.0f));
             }
             else
                 mesh.Render2(gl);
@@ -162,8 +160,7 @@ namespace Close2GL
             glControl2.MakeCurrent();
 
             GL.Viewport(0, 0, glControl2.Width, glControl2.Height);
-            gl.Perspective(projLeftX, projRightX, projBottomY, projTopY, projNearZ, projFarZ);
-            //gl.Viewport(glControl2.Width, glControl2.Height);
+            gl.Viewport(glControl2.Width, glControl2.Height);
         }
 
         private void glControls_KeyDown(object sender, KeyEventArgs e) {
@@ -221,6 +218,7 @@ namespace Close2GL
             if (k.IsKeyDown(Key.Escape)) {
                 mesh = null;
                 meshLoaded = false;
+                glControl1.Invalidate(); glControl2.Invalidate();
             }
 
 
