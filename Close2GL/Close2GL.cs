@@ -30,8 +30,6 @@ namespace Close2GL
         private List<Vector3> normals;
         private List<Vector2> textureCoordinates;
 
-        private List<Vector4> inViewport;
-
         private bool hasNormals;
         private bool hasTexture;
 
@@ -255,8 +253,11 @@ namespace Close2GL
         }
 
         private void TransformMVP() {
-            for (int index = 0; index < vertices.Count; index++)
+            for (int index = 0; index < vertices.Count; index++) {
                 vertices[index] = Vector4.Transform(vertices[index], mvp);
+                if (hasNormals)
+                    normals[index] = Vector3.TransformNormal(normals[index], mvp);
+            }
         }
 
         private void SimpleClipping() {
@@ -287,22 +288,94 @@ namespace Close2GL
         }
 
         private void MapToViewport() {
-            inViewport = new List<Vector4>();
-
             for (int index = 0; index < vertices.Count; index++)
-                inViewport.Add(Vector4.Transform(vertices[index], viewport));
+                vertices[index] = Vector4.Transform(vertices[index], viewport);
         }
 
         private void Raster() {
-            GL.MatrixMode(MatrixMode.Modelview); GL.LoadIdentity();
-            
             Vector3[] colorBuffer = new Vector3[vpW * vpH];
 
-            foreach (Vector4 v in inViewport)
-                colorBuffer[(int)(vpW * (Math.Round(v.Y) - 1) + Math.Round(v.X))] = drawColor;
+            // Raster vertices as points
+            if (mode == PrimitiveType.Points || mode == PrimitiveType.Triangles)
+                foreach (Vector4 v in vertices)
+                    colorBuffer[FindBufferPosition(v.X, v.Y)] = drawColor;
 
-            GL.PixelStore(PixelStoreParameter.PackAlignment, 0);
+            // Raster lines connecting vertices into triangles
+            if (mode == PrimitiveType.Triangles) {
+                for (int index = 0; index + 2 <= vertices.Count - 1; index += 3) {
+                    int[] ordered = OrderByY(index);
+                    float incX = 0, incZ = 0;
+                    
+                    int startY = (int)Math.Round(vertices[ordered[0]].Y),
+                        endY = (int)Math.Round(vertices[ordered[1]].Y);
+                    int scanline = startY;
+
+                    CalculateIncrements(vertices[ordered[0]], vertices[ordered[1]], out incX, out incZ);
+
+                    if (startY == endY) {
+                        // horizontal line
+                    }
+                    else while (scanline < endY) {
+                        // AARGH
+                        
+                        scanline++;
+                    }
+
+                }
+            }
+
+            // Fill triangles
+
             GL.DrawPixels<Vector3>(vpW, vpH, PixelFormat.Rgb, PixelType.Float, colorBuffer);
+        }
+
+        private void CalculateIncrements(Vector4 v1, Vector4 v2, out float incX, out float incZ) {
+            float dx = v2.X - v1.X;
+            float dy = v2.Y - v1.Y;
+            float dz = v2.Z - v1.Z;
+
+            if (dy == 0) {
+                incX = 0;
+                incZ = 0;
+            }
+            else {
+                incX = dx / dy;
+                incZ = dz / dy;
+            }
+        }
+
+        private void Swap(ref int a, ref int b) {
+            int swap = a;
+            a = b;
+            b = a;
+        }
+
+        private int[] OrderByY(int startIndex) {
+            int first = 0, second = 0, third = 0;
+
+            first = startIndex;
+            second = startIndex + 1;
+            third = startIndex + 2;
+
+            if (vertices[first].Y > vertices[second].Y) Swap(ref first, ref second);
+            if (vertices[second].Y > vertices[third].Y) {
+                Swap(ref second, ref third);
+                if (vertices[first].Y > vertices[second].Y) Swap(ref first, ref second);
+            }
+
+            return new int[] { first, second, third };
+        }
+
+        private int FindBufferPosition(Vector4 v) {
+            return FindBufferPosition(v.X, v.Y);
+        }
+
+        private int FindBufferPosition(float x, float y) {
+            return (int)(vpW * Math.Round(y) + Math.Round(x));
+        }
+
+        private Vector3 CalculateColor(Vector4 v) {
+            return drawColor;
         }
 
         private void DiscardFace(int startIndex) {
