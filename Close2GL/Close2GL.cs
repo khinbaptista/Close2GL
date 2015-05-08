@@ -14,6 +14,7 @@ namespace Close2GL
         private Matrix4 projection;
         private Matrix4 mvp;
         private Matrix4 viewport;
+        private Vector2 viewportDimensions;
 
         float left, right, top, bottom, near, far;
 
@@ -25,8 +26,13 @@ namespace Close2GL
         private PrimitiveType mode;
 
         private List<Vector4> vertices;
-        private List<Vector4> normals;
+        private List<Vector3> normals;
         private List<Vector2> textureCoordinates;
+
+        private List<Vector4> inViewport;
+
+        private bool hasNormals;
+        private bool hasTexture;
 
         public Matrix4 Modelview {
             get { return modelview; }
@@ -53,9 +59,9 @@ namespace Close2GL
         public void ResetModelview() { modelview = Matrix4.Identity; }
 
         public void LookAt(Vector3 eye, Vector3 target, Vector3 up) {
-            Vector3 direction = (eye - target).Normalized(); // right-hand coordinate system: invert the direction // n
-            Vector3 right = Vector3.Cross(up, direction).Normalized();  // u
-            Vector3 realUp = Vector3.Cross(direction, right).Normalized();  // v
+            Vector3 direction = (eye - target).Normalized(); // right-hand coordinate system: invert the direction
+            Vector3 right = Vector3.Cross(up, direction).Normalized();
+            Vector3 realUp = Vector3.Cross(direction, right).Normalized();
 
             // implement the Matrix4.LookAt equivalent using eye, target and realUp
             Matrix4 lookat = Matrix4.Identity;
@@ -143,11 +149,6 @@ namespace Close2GL
 
             projection.Transpose();
             UpdateMVP();
-
-            //Matrix4 m = Matrix4.CreateOrthographicOffCenter(left, right, bottom, top, near, far);
-            //Matrix4 m = Matrix4.CreateOrthographicOffCenter(-1, 1, -1, 1, near, far);
-            //Matrix4 m = Matrix4.CreateOrthographicOffCenter(-(right - left) / 2 / 0f, (right - left) / 2, -(top - bottom) / 2.0f, (top - bottom) / 2.0f, near, far);
-            //GL.MatrixMode(MatrixMode.Projection); GL.LoadIdentity(); GL.MultMatrix(ref m); GL.MatrixMode(MatrixMode.Modelview);
         }
 
         public void Viewport(int width, int height) {
@@ -156,14 +157,12 @@ namespace Close2GL
             viewport.M14 = width / 2.0f; viewport.M24 = height / 2.0f;
 
             viewport.Transpose();
+
+            viewportDimensions = new Vector2(width, height);
         }
 
         private void UpdateMVP() {
             mvp = Matrix4.Mult(modelview, projection);
-        }
-
-        public void ViewportResized(int width, int height) {
-
         }
 
         public void Begin(PrimitiveType rendermode) {
@@ -172,15 +171,9 @@ namespace Close2GL
 
             mode = rendermode;
 
-            //primitive = (mode == PrimitiveType.Triangles) ? new List<Vector4>(3) : new List<Vector4>(1);
             vertices = new List<Vector4>();
-            normals = new List<Vector4>();
+            normals = new List<Vector3>();
             textureCoordinates = new List<Vector2>();
-
-            /*GL.MatrixMode(MatrixMode.Projection); GL.LoadIdentity();
-            GL.MatrixMode(MatrixMode.Modelview); GL.LoadIdentity();
-
-            GL.Begin(rendermode);*/
         }
 
         public void Vertex(Vector3 vertex) {
@@ -188,50 +181,26 @@ namespace Close2GL
 
             Vector4 vh = new Vector4(vertex, 1);
             vertices.Add(vh);
-            /*
-            primitive.Add(vh);
-
-            if (primitive.Count == primitive.Capacity) {
-                bool discard = false;
-
-                foreach (Vector4 v in primitive) {
-                    if (discard) break;
-
-                    Vector4 transformed = Vector4.Transform(v, mvp);
-
-                    if (transformed.X < -transformed.Z || transformed.X > transformed.Z ||
-                        transformed.Y < -transformed.Z || transformed.Y > transformed.Z || transformed.Z < near || transformed.Z > far)
-                        discard = true;
-
-                    if (discard) break;
-
-                    transformed /= transformed.W;
-
-                    transformed = Vector4.Transform(transformed, viewport);
-
-                    if (!discard) {
-                        GL.Vertex4(transformed);
-                    }
-                        
-                }
-
-                primitive = new List<Vector4>(primitive.Capacity);
-            }*/
-
+            
         }
 
         public void Normal(Vector3 normal) {
             if (!begun) throw new Exception("Tried to load normal before call to Begin()");
 
-            //
+            normals.Add(normal);
         }
 
         public void TextureCoordinate(Vector2 textureCoordinate) {
             if (!begun) throw new Exception("Tried to load texture coordinate before call to Begin()");
+
+            textureCoordinates.Add(textureCoordinate);
         }
 
         public void End() {
             if (!begun) throw new Exception("Tried to call End() before call to Begin()");
+
+            hasNormals = normals.Count > 0;
+            hasTexture = textureCoordinates.Count > 0;
 
             if (culling && mode == PrimitiveType.Triangles)
                 CullBackfaces();
@@ -242,7 +211,6 @@ namespace Close2GL
             MapToViewport();
             Raster();
 
-            //GL.End();
             begun = false;
         }
 
@@ -286,13 +254,13 @@ namespace Close2GL
         private void SimpleClipping() {
             int face = 0;
 
-            while (face + 2 < vertices.Count - 1) {
+            while (face + 2 <= vertices.Count - 1) {
                 bool faceDiscarded = false;
 
                 for (int vertex = 0; vertex < 3; vertex++) {
                     int index = face + vertex;
-                    if (vertices[index].X < -vertices[index].Z || vertices[index].X > vertices[index].Z ||
-                        vertices[index].Y < -vertices[index].Z || vertices[index].Y > vertices[index].Z ||
+                    if (Math.Abs(vertices[index].X) > Math.Abs(vertices[index].Z) ||
+                        Math.Abs(vertices[index].Y) > Math.Abs(vertices[index].Z) ||
                         vertices[index].Z < near || vertices[index].Z > far)
 
                         faceDiscarded = true;
@@ -311,7 +279,10 @@ namespace Close2GL
         }
 
         private void MapToViewport() {
+            inViewport = new List<Vector4>();
 
+            for (int index = 0; index < vertices.Count; index++)
+                inViewport.Add(Vector4.Transform(vertices[index], viewport));
         }
 
         private void Raster() {
@@ -328,10 +299,8 @@ namespace Close2GL
 
         private void DiscardFace(int startIndex) {
             vertices.RemoveRange(startIndex, 3);
-            /*try { normals.RemoveRange(startIndex, 3); }
-            catch { }
-            try { textureCoordinates.RemoveRange(startIndex, 3); }
-            catch { }*/
+            if (hasNormals) normals.RemoveRange(startIndex, 3);
+            if (hasTexture) textureCoordinates.RemoveRange(startIndex, 3);
         }
 
         #endregion
