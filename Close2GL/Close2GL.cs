@@ -302,52 +302,38 @@ namespace Close2GL
 
             // Raster lines connecting vertices into triangles
             if (mode == PrimitiveType.Triangles) {
+                Edge[] edges = new Edge[3];
+
                 for (int index = 0; index + 2 <= vertices.Count - 1; index += 3) {
                     int[] ordered = OrderByY(index);
-                    float incX = 0, incZ = 0;
-                    
-                    int startY = (int)Math.Round(vertices[ordered[0]].Y),
-                        endY = (int)Math.Round(vertices[ordered[1]].Y);
-                    int scanline = startY;
 
-                    CalculateIncrements(vertices[ordered[0]], vertices[ordered[1]], out incX, out incZ);
+                    edges[0] = new Edge(vertices[ordered[0]], vertices[ordered[1]]);
+                    edges[1] = new Edge(vertices[ordered[0]], vertices[ordered[2]]);
+                    edges[2] = new Edge(vertices[ordered[1]], vertices[ordered[2]]);
 
-                    if (startY == endY) {
-                        // horizontal line
-                    }
-                    else while (scanline < endY) {
-                        // AARGH
-                        
-                        scanline++;
+
+                    for (int ei = 0; ei < 3; ei++) {
+                        edges[ei].Next();
+
+                        while (!edges[ei].Finished) {
+                            colorBuffer[FindBufferPosition(edges[ei].current)] = drawColor;
+                            edges[ei].Next();
+                        }
                     }
 
+                    // fill triangles if required
                 }
-            }
 
-            // Fill triangles
+                
+            }
 
             GL.DrawPixels<Vector3>(vpW, vpH, PixelFormat.Rgb, PixelType.Float, colorBuffer);
-        }
-
-        private void CalculateIncrements(Vector4 v1, Vector4 v2, out float incX, out float incZ) {
-            float dx = v2.X - v1.X;
-            float dy = v2.Y - v1.Y;
-            float dz = v2.Z - v1.Z;
-
-            if (dy == 0) {
-                incX = 0;
-                incZ = 0;
-            }
-            else {
-                incX = dx / dy;
-                incZ = dz / dy;
-            }
         }
 
         private void Swap(ref int a, ref int b) {
             int swap = a;
             a = b;
-            b = a;
+            b = swap;
         }
 
         private int[] OrderByY(int startIndex) {

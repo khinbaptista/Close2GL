@@ -105,7 +105,7 @@ namespace Close2GL
             GL.Color3(meshColor);
             GL.Begin(mode);
             if (!meshLoaded) {
-                GL.Vertex3(-10.0f, -10.0f, 0.0f);
+                GL.Vertex3(-10.0f, -5.0f, 0.0f);
                 GL.Vertex3(0.0f, 5.0f, 0.0f);
                 GL.Vertex3(10.0f, -10.0f, 0.0f);
             }
@@ -136,7 +136,7 @@ namespace Close2GL
             gl.Begin(mode);
 
             if (!meshLoaded) {
-                gl.Vertex(new Vector3(-10.0f, -10.0f, 0.0f));
+                gl.Vertex(new Vector3(-10.0f, -5.0f, 0.0f));
                 gl.Vertex(new Vector3(0.0f, 5.0f, 0.0f));
                 gl.Vertex(new Vector3(10.0f, -10.0f, 0.0f));
             }
