@@ -56,7 +56,7 @@ namespace Close2GL
             Vector2 result = new Vector2(x, y) - start.Xy;
             Vector2 original = end.Xy - start.Xy;
 
-            if (result.LengthFast > original.LengthFast) return -1;
+            if (result.LengthFast > original.LengthFast) return -1;// (int)Math.Round(end.X);
 
             return (int)Math.Round(x);
         }

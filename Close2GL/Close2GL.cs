@@ -328,7 +328,7 @@ namespace Close2GL
 
                     // Fill the triangles if required
                     if (!wireframe) {
-                        int scanline = (int)Math.Round(edges[0].start.Y) + 1;
+                        int scanline = (int)Math.Round(edges[0].start.Y);// +1;
                         int startX, endX, currentX;
                         int index1 = 0, index2 = 1;
 
