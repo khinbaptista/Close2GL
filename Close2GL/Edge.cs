@@ -46,12 +46,18 @@ namespace Close2GL
             direction = (end - start).Normalized();
         }
 
-        public int GetX(float y, int max) {
-            float d = (end.X - start.X) / (end.Y - start.Y);
-            if (float.IsInfinity(d)) return -1;
+        public int GetX(float y) {
+            float dy = (end.Y - start.Y);
+            if (dy == 0) return -1;
 
+            float d = (end.X - start.X) / dy;
             float x = start.X + d * (y - start.Y);
-            if (x >= max) return -1;
+
+            Vector2 result = new Vector2(x, y) - start.Xy;
+            Vector2 original = end.Xy - start.Xy;
+
+            if (result.LengthFast > original.LengthFast) return -1;
+
             return (int)Math.Round(x);
         }
     }

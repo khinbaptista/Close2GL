@@ -334,8 +334,8 @@ namespace Close2GL
 
                         for (int pair = 0; pair < 2; pair++) {
                             do {
-                                startX = edges[index1].GetX(scanline, vpW);
-                                endX = edges[index2].GetX(scanline, vpW);
+                                startX = edges[index1].GetX(scanline);
+                                endX = edges[index2].GetX(scanline);
 
                                 if (startX > endX) {
                                     Swap(ref startX, ref endX);
