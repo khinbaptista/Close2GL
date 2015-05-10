@@ -107,7 +107,7 @@ namespace Close2GL
             if (!meshLoaded) {
                 GL.Vertex3(-10.0f, -5.0f, 0.0f);
                 GL.Vertex3(0.0f, 5.0f, 0.0f);
-                GL.Vertex3(10.0f, -10.0f, 0.0f);
+                GL.Vertex3(10.0f, -5.0f, 0.0f);
             }
             else {
                 mesh.Render();
@@ -138,7 +138,7 @@ namespace Close2GL
             if (!meshLoaded) {
                 gl.Vertex(new Vector3(-10.0f, -5.0f, 0.0f));
                 gl.Vertex(new Vector3(0.0f, 5.0f, 0.0f));
-                gl.Vertex(new Vector3(10.0f, -10.0f, 0.0f));
+                gl.Vertex(new Vector3(10.0f, -5.0f, 0.0f));
             }
             else
                 mesh.Render2(gl);
