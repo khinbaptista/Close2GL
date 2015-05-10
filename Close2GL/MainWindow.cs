@@ -350,14 +350,13 @@ namespace Close2GL
                 wireframe = false;
             }
 
-            if (wireframe) {
-                glControl1.MakeCurrent(); GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
-                glControl2.MakeCurrent(); GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
-            }
-            else {
-                glControl1.MakeCurrent(); GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
-                glControl2.MakeCurrent(); GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
-            }
+            glControl1.MakeCurrent();
+            if (wireframe)
+                GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+            else
+                GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+
+            gl.RenderWireframe(wireframe);
 
             glControl1.Invalidate();
             glControl2.Invalidate();

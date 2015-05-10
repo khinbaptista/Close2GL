@@ -16,17 +16,26 @@ namespace Close2GL
         public Vector4 end;
         public Vector4 direction;
 
-        public bool Finished { get { return (current - start).Length >= (end - start).Length; } }
+        public bool Finished { get { return (current - start).LengthFast >= (end - start).LengthFast; } }
 
-        public Edge(Vector4 start, Vector4 end) {
+        public Edge(Vector4 start, Vector4 end, bool order = true) {
             this.start = start; this.end = end;
 
+            if (order) Order();
             CalculateIncrements();
             Start();
         }
 
+        public void Order() {
+            if (start.Y > end.Y) {
+                Vector4 swap = end;
+                end = start;
+                start = swap;
+            }
+        }
+
         public void Start() {
-            current = start;
+            current = start + direction;
         }
 
         public void Next() {
@@ -35,6 +44,13 @@ namespace Close2GL
 
         private void CalculateIncrements() {
             direction = (end - start).Normalized();
+        }
+
+        public int GetX(float y) {
+            float d = (end.Y - start.Y) / (end.X - start.X);
+            float x = (y - start.Y + d * start.X) / d;
+
+            return (int)Math.Round(x);
         }
     }
 }

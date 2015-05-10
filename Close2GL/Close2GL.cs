@@ -25,11 +25,14 @@ namespace Close2GL
 
         private bool begun;
         private PrimitiveType mode;
+        private bool wireframe;
 
         private List<Vector4> vertices;
         private List<Vector3> normals;
+        private List<Vector3> colors;
         private List<Vector2> textureCoordinates;
 
+        private bool hasColors;
         private bool hasNormals;
         private bool hasTexture;
 
@@ -134,6 +137,10 @@ namespace Close2GL
         public void BackfaceCulling(bool value, FrontFaceDirection face = FrontFaceDirection.Cw) {
             culling = value;
             this.face = face;
+        }
+
+        public void RenderWireframe(bool value) {
+            wireframe = value;
         }
 
         public void Perspective(float left, float right, float bottom, float top, float near, float far) {
@@ -304,7 +311,7 @@ namespace Close2GL
             if (mode == PrimitiveType.Triangles) {
                 Edge[] edges = new Edge[3];
 
-                for (int index = 0; index + 2 <= vertices.Count - 1; index += 3) {
+                for (int index = 0; index + 2 < vertices.Count; index += 3) { // index + 2 <= vertices.Count - 1
                     int[] ordered = OrderByY(index);
 
                     edges[0] = new Edge(vertices[ordered[0]], vertices[ordered[1]]);
@@ -313,15 +320,38 @@ namespace Close2GL
 
 
                     for (int ei = 0; ei < 3; ei++) {
-                        edges[ei].Next();
-
                         while (!edges[ei].Finished) {
                             colorBuffer[FindBufferPosition(edges[ei].current)] = drawColor;
                             edges[ei].Next();
                         }
                     }
 
-                    // fill triangles if required
+                    // Fill the triangles if required
+                    if (!wireframe) {
+                        int scanline = (int)Math.Round(edges[0].start.Y) + 1;
+                        int startX, endX, currentX;
+                        int index1 = 0, index2 = 1;
+
+                        for (int pair = 0; pair < 2; pair++) {
+                            do {
+                                startX = edges[index1].GetX(scanline);
+                                endX = edges[index2].GetX(scanline);
+
+                                currentX = startX + 1;
+
+                                while (currentX < endX) {
+                                    colorBuffer[FindBufferPosition(currentX, scanline)] = drawColor;
+                                    currentX++;
+                                }
+
+                                scanline++;
+                            } while (scanline < edges[index1].end.Y && scanline < edges[index2].end.Y);
+
+                            if (scanline >= edges[index1].end.Y) index1 = 2;
+                            else index2 = 2;
+                        }
+
+                    }
                 }
 
                 
