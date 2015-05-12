@@ -115,6 +115,38 @@ namespace Close2GL
         private NumericUpDown meshColorR;
         private Label labelMeshColorR;
         private Button buttonLoadMesh;
+        private GroupBox groupBox2;
+        private NumericUpDown numericUpDown4;
+        private Label label8;
+        private NumericUpDown numericUpDown5;
+        private Label label9;
+        private NumericUpDown numericUpDown6;
+        private Label label10;
+        private CheckBox checkBox1;
+        private GroupBox groupBox1;
+        private NumericUpDown numericUpDown1;
+        private Label label2;
+        private NumericUpDown numericUpDown2;
+        private Label label3;
+        private NumericUpDown numericUpDown3;
+        private Label label7;
+        private GroupBox groupBox3;
+        private NumericUpDown numericUpDown7;
+        private Label label11;
+        private NumericUpDown numericUpDown8;
+        private Label label12;
+        private NumericUpDown numericUpDown9;
+        private Label label13;
+        private Label label14;
+        private NumericUpDown materialShine;
+        private GroupBox groupBox4;
+        private RadioButton radioButton1;
+        private RadioButton radioButton2;
+        private Button button1;
+        private GroupBox groupBox5;
+        private RadioButton radioButton3;
+        private RadioButton radioButton4;
+        private RadioButton radioButton5;
 
         Vector3 meshColor;
 
@@ -533,6 +565,39 @@ namespace Close2GL
         private void InitializeComponent() {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupControls = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
+            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
+            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
+            this.groupMesh = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.materialShine = new System.Windows.Forms.NumericUpDown();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
+            this.label11 = new System.Windows.Forms.Label();
+            this.numericUpDown8 = new System.Windows.Forms.NumericUpDown();
+            this.label12 = new System.Windows.Forms.Label();
+            this.numericUpDown9 = new System.Windows.Forms.NumericUpDown();
+            this.label13 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.buttonLoadMesh = new System.Windows.Forms.Button();
+            this.groupMeshColor = new System.Windows.Forms.GroupBox();
+            this.meshColorB = new System.Windows.Forms.NumericUpDown();
+            this.labelMeshColorB = new System.Windows.Forms.Label();
+            this.meshColorG = new System.Windows.Forms.NumericUpDown();
+            this.labelMeshColorG = new System.Windows.Forms.Label();
+            this.meshColorR = new System.Windows.Forms.NumericUpDown();
+            this.labelMeshColorR = new System.Windows.Forms.Label();
             this.groupProj = new System.Windows.Forms.GroupBox();
             this.projFar = new System.Windows.Forms.NumericUpDown();
             this.labelFar = new System.Windows.Forms.Label();
@@ -560,8 +625,28 @@ namespace Close2GL
             this.labelLightPosY = new System.Windows.Forms.Label();
             this.numericLightPosX = new System.Windows.Forms.NumericUpDown();
             this.labelLightPosX = new System.Windows.Forms.Label();
-            this.checkLight = new System.Windows.Forms.CheckBox();
             this.groupCamera = new System.Windows.Forms.GroupBox();
+            this.groupCameraUp = new System.Windows.Forms.GroupBox();
+            this.cameraUpZ = new System.Windows.Forms.NumericUpDown();
+            this.labelCamUpZ = new System.Windows.Forms.Label();
+            this.cameraUpY = new System.Windows.Forms.NumericUpDown();
+            this.labelCamUpY = new System.Windows.Forms.Label();
+            this.cameraUpX = new System.Windows.Forms.NumericUpDown();
+            this.labelCamUpX = new System.Windows.Forms.Label();
+            this.groupCameraTarget = new System.Windows.Forms.GroupBox();
+            this.cameraTargetZ = new System.Windows.Forms.NumericUpDown();
+            this.labelCamTargetZ = new System.Windows.Forms.Label();
+            this.cameraTargetY = new System.Windows.Forms.NumericUpDown();
+            this.labelCamTargetY = new System.Windows.Forms.Label();
+            this.cameraTargetX = new System.Windows.Forms.NumericUpDown();
+            this.labelCamTargetX = new System.Windows.Forms.Label();
+            this.groupCameraPosition = new System.Windows.Forms.GroupBox();
+            this.cameraPosZ = new System.Windows.Forms.NumericUpDown();
+            this.labelCamPosZ = new System.Windows.Forms.Label();
+            this.cameraPosY = new System.Windows.Forms.NumericUpDown();
+            this.labelCamPosY = new System.Windows.Forms.Label();
+            this.cameraPosX = new System.Windows.Forms.NumericUpDown();
+            this.labelCamPosX = new System.Windows.Forms.Label();
             this.buttonReset = new System.Windows.Forms.Button();
             this.groupPivot = new System.Windows.Forms.GroupBox();
             this.radioLocal = new System.Windows.Forms.RadioButton();
@@ -573,6 +658,7 @@ namespace Close2GL
             this.radioTriangles = new System.Windows.Forms.RadioButton();
             this.radioWireframe = new System.Windows.Forms.RadioButton();
             this.radioPoints = new System.Windows.Forms.RadioButton();
+            this.checkLight = new System.Windows.Forms.CheckBox();
             this.groupFace = new System.Windows.Forms.GroupBox();
             this.radioCCW = new System.Windows.Forms.RadioButton();
             this.radioCW = new System.Windows.Forms.RadioButton();
@@ -584,41 +670,37 @@ namespace Close2GL
             this.groupClose2GL = new System.Windows.Forms.GroupBox();
             this.glControl2 = new OpenTK.GLControl();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.groupCameraPosition = new System.Windows.Forms.GroupBox();
-            this.cameraPosZ = new System.Windows.Forms.NumericUpDown();
-            this.labelCamPosZ = new System.Windows.Forms.Label();
-            this.cameraPosY = new System.Windows.Forms.NumericUpDown();
-            this.labelCamPosY = new System.Windows.Forms.Label();
-            this.cameraPosX = new System.Windows.Forms.NumericUpDown();
-            this.labelCamPosX = new System.Windows.Forms.Label();
-            this.groupCameraTarget = new System.Windows.Forms.GroupBox();
-            this.cameraTargetZ = new System.Windows.Forms.NumericUpDown();
-            this.labelCamTargetZ = new System.Windows.Forms.Label();
-            this.cameraTargetY = new System.Windows.Forms.NumericUpDown();
-            this.labelCamTargetY = new System.Windows.Forms.Label();
-            this.cameraTargetX = new System.Windows.Forms.NumericUpDown();
-            this.labelCamTargetX = new System.Windows.Forms.Label();
-            this.groupCameraUp = new System.Windows.Forms.GroupBox();
-            this.cameraUpZ = new System.Windows.Forms.NumericUpDown();
-            this.labelCamUpZ = new System.Windows.Forms.Label();
-            this.cameraUpY = new System.Windows.Forms.NumericUpDown();
-            this.labelCamUpY = new System.Windows.Forms.Label();
-            this.cameraUpX = new System.Windows.Forms.NumericUpDown();
-            this.labelCamUpX = new System.Windows.Forms.Label();
-            this.groupMesh = new System.Windows.Forms.GroupBox();
-            this.groupMeshColor = new System.Windows.Forms.GroupBox();
-            this.meshColorB = new System.Windows.Forms.NumericUpDown();
-            this.labelMeshColorB = new System.Windows.Forms.Label();
-            this.meshColorG = new System.Windows.Forms.NumericUpDown();
-            this.labelMeshColorG = new System.Windows.Forms.Label();
-            this.meshColorR = new System.Windows.Forms.NumericUpDown();
-            this.labelMeshColorR = new System.Windows.Forms.Label();
-            this.buttonLoadMesh = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.button1 = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.radioButton5 = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.groupControls.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            this.groupMesh.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.materialShine)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            this.groupMeshColor.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.meshColorB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.meshColorG)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.meshColorR)).BeginInit();
             this.groupProj.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.projFar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.projNear)).BeginInit();
@@ -635,6 +717,18 @@ namespace Close2GL
             ((System.ComponentModel.ISupportInitialize)(this.numericLightPosY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericLightPosX)).BeginInit();
             this.groupCamera.SuspendLayout();
+            this.groupCameraUp.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraUpZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraUpY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraUpX)).BeginInit();
+            this.groupCameraTarget.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraTargetZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraTargetY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraTargetX)).BeginInit();
+            this.groupCameraPosition.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraPosZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraPosY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraPosX)).BeginInit();
             this.groupPivot.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cameraSpeed)).BeginInit();
             this.groupRendermode.SuspendLayout();
@@ -645,23 +739,8 @@ namespace Close2GL
             this.splitContainer2.SuspendLayout();
             this.groupOpenGL.SuspendLayout();
             this.groupClose2GL.SuspendLayout();
-            this.groupCameraPosition.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraPosZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraPosY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraPosX)).BeginInit();
-            this.groupCameraTarget.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraTargetZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraTargetY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraTargetX)).BeginInit();
-            this.groupCameraUp.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraUpZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraUpY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraUpX)).BeginInit();
-            this.groupMesh.SuspendLayout();
-            this.groupMeshColor.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.meshColorB)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.meshColorG)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.meshColorR)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -681,7 +760,7 @@ namespace Close2GL
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Panel2.Tag = "panelGraphics";
-            this.splitContainer1.Size = new System.Drawing.Size(1504, 899);
+            this.splitContainer1.Size = new System.Drawing.Size(1360, 657);
             this.splitContainer1.SplitterDistance = 191;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -689,23 +768,537 @@ namespace Close2GL
             // 
             this.groupControls.AutoSize = true;
             this.groupControls.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupControls.Controls.Add(this.groupBox2);
             this.groupControls.Controls.Add(this.groupMesh);
             this.groupControls.Controls.Add(this.groupProj);
             this.groupControls.Controls.Add(this.groupLightColor);
             this.groupControls.Controls.Add(this.groupLightPos);
-            this.groupControls.Controls.Add(this.checkLight);
             this.groupControls.Controls.Add(this.groupCamera);
             this.groupControls.Controls.Add(this.groupRendermode);
+            this.groupControls.Controls.Add(this.checkLight);
             this.groupControls.Controls.Add(this.groupFace);
             this.groupControls.Controls.Add(this.checkCulling);
             this.groupControls.Controls.Add(this.checkDepth);
             this.groupControls.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupControls.Location = new System.Drawing.Point(0, 0);
             this.groupControls.Name = "groupControls";
-            this.groupControls.Size = new System.Drawing.Size(1504, 191);
+            this.groupControls.Size = new System.Drawing.Size(1360, 191);
             this.groupControls.TabIndex = 1;
             this.groupControls.TabStop = false;
             this.groupControls.Text = "Graphics Controls";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.numericUpDown4);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.numericUpDown5);
+            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.numericUpDown6);
+            this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Location = new System.Drawing.Point(861, 95);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(88, 88);
+            this.groupBox2.TabIndex = 10;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Ambient light";
+            // 
+            // numericUpDown4
+            // 
+            this.numericUpDown4.DecimalPlaces = 3;
+            this.numericUpDown4.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            131072});
+            this.numericUpDown4.Location = new System.Drawing.Point(24, 64);
+            this.numericUpDown4.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDown4.TabIndex = 11;
+            this.numericUpDown4.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(7, 67);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(14, 13);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "B";
+            // 
+            // numericUpDown5
+            // 
+            this.numericUpDown5.DecimalPlaces = 3;
+            this.numericUpDown5.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            131072});
+            this.numericUpDown5.Location = new System.Drawing.Point(24, 40);
+            this.numericUpDown5.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown5.Name = "numericUpDown5";
+            this.numericUpDown5.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDown5.TabIndex = 9;
+            this.numericUpDown5.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 44);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(15, 13);
+            this.label9.TabIndex = 8;
+            this.label9.Text = "G";
+            // 
+            // numericUpDown6
+            // 
+            this.numericUpDown6.DecimalPlaces = 3;
+            this.numericUpDown6.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            131072});
+            this.numericUpDown6.Location = new System.Drawing.Point(24, 16);
+            this.numericUpDown6.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown6.Name = "numericUpDown6";
+            this.numericUpDown6.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDown6.TabIndex = 7;
+            this.numericUpDown6.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 19);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(15, 13);
+            this.label10.TabIndex = 6;
+            this.label10.Text = "R";
+            // 
+            // groupMesh
+            // 
+            this.groupMesh.Controls.Add(this.groupBox5);
+            this.groupMesh.Controls.Add(this.button1);
+            this.groupMesh.Controls.Add(this.groupBox4);
+            this.groupMesh.Controls.Add(this.label14);
+            this.groupMesh.Controls.Add(this.materialShine);
+            this.groupMesh.Controls.Add(this.groupBox3);
+            this.groupMesh.Controls.Add(this.checkBox1);
+            this.groupMesh.Controls.Add(this.groupBox1);
+            this.groupMesh.Controls.Add(this.buttonLoadMesh);
+            this.groupMesh.Controls.Add(this.groupMeshColor);
+            this.groupMesh.Location = new System.Drawing.Point(957, 12);
+            this.groupMesh.Name = "groupMesh";
+            this.groupMesh.Size = new System.Drawing.Size(395, 171);
+            this.groupMesh.TabIndex = 9;
+            this.groupMesh.TabStop = false;
+            this.groupMesh.Text = "Mesh";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(180, 56);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(52, 13);
+            this.label14.TabIndex = 14;
+            this.label14.Text = "Shininess";
+            // 
+            // materialShine
+            // 
+            this.materialShine.DecimalPlaces = 3;
+            this.materialShine.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.materialShine.Location = new System.Drawing.Point(235, 53);
+            this.materialShine.Name = "materialShine";
+            this.materialShine.Size = new System.Drawing.Size(52, 20);
+            this.materialShine.TabIndex = 13;
+            this.materialShine.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            65536});
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.numericUpDown7);
+            this.groupBox3.Controls.Add(this.label11);
+            this.groupBox3.Controls.Add(this.numericUpDown8);
+            this.groupBox3.Controls.Add(this.label12);
+            this.groupBox3.Controls.Add(this.numericUpDown9);
+            this.groupBox3.Controls.Add(this.label13);
+            this.groupBox3.Location = new System.Drawing.Point(200, 76);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(88, 88);
+            this.groupBox3.TabIndex = 12;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Specular";
+            // 
+            // numericUpDown7
+            // 
+            this.numericUpDown7.DecimalPlaces = 3;
+            this.numericUpDown7.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            131072});
+            this.numericUpDown7.Location = new System.Drawing.Point(24, 64);
+            this.numericUpDown7.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown7.Name = "numericUpDown7";
+            this.numericUpDown7.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDown7.TabIndex = 11;
+            this.numericUpDown7.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(7, 67);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(14, 13);
+            this.label11.TabIndex = 10;
+            this.label11.Text = "B";
+            // 
+            // numericUpDown8
+            // 
+            this.numericUpDown8.DecimalPlaces = 3;
+            this.numericUpDown8.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            131072});
+            this.numericUpDown8.Location = new System.Drawing.Point(24, 40);
+            this.numericUpDown8.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown8.Name = "numericUpDown8";
+            this.numericUpDown8.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDown8.TabIndex = 9;
+            this.numericUpDown8.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 44);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(15, 13);
+            this.label12.TabIndex = 8;
+            this.label12.Text = "G";
+            // 
+            // numericUpDown9
+            // 
+            this.numericUpDown9.DecimalPlaces = 3;
+            this.numericUpDown9.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            131072});
+            this.numericUpDown9.Location = new System.Drawing.Point(24, 16);
+            this.numericUpDown9.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown9.Name = "numericUpDown9";
+            this.numericUpDown9.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDown9.TabIndex = 7;
+            this.numericUpDown9.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(6, 19);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(15, 13);
+            this.label13.TabIndex = 6;
+            this.label13.Text = "R";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(9, 55);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(92, 17);
+            this.checkBox1.TabIndex = 11;
+            this.checkBox1.Text = "Override color";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.numericUpDown1);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.numericUpDown2);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.numericUpDown3);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Location = new System.Drawing.Point(104, 76);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(88, 88);
+            this.groupBox1.TabIndex = 10;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Ambient";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.DecimalPlaces = 3;
+            this.numericUpDown1.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            131072});
+            this.numericUpDown1.Location = new System.Drawing.Point(24, 64);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDown1.TabIndex = 11;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(7, 67);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(14, 13);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "B";
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.DecimalPlaces = 3;
+            this.numericUpDown2.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            131072});
+            this.numericUpDown2.Location = new System.Drawing.Point(24, 40);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDown2.TabIndex = 9;
+            this.numericUpDown2.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 44);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(15, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "G";
+            // 
+            // numericUpDown3
+            // 
+            this.numericUpDown3.DecimalPlaces = 3;
+            this.numericUpDown3.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            131072});
+            this.numericUpDown3.Location = new System.Drawing.Point(24, 16);
+            this.numericUpDown3.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown3.Name = "numericUpDown3";
+            this.numericUpDown3.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDown3.TabIndex = 7;
+            this.numericUpDown3.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 19);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(15, 13);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "R";
+            // 
+            // buttonLoadMesh
+            // 
+            this.buttonLoadMesh.Location = new System.Drawing.Point(8, 20);
+            this.buttonLoadMesh.Name = "buttonLoadMesh";
+            this.buttonLoadMesh.Size = new System.Drawing.Size(87, 28);
+            this.buttonLoadMesh.TabIndex = 9;
+            this.buttonLoadMesh.Text = "Load mesh";
+            this.buttonLoadMesh.UseVisualStyleBackColor = true;
+            this.buttonLoadMesh.Click += new System.EventHandler(this.buttonLoadMesh_Click);
+            // 
+            // groupMeshColor
+            // 
+            this.groupMeshColor.Controls.Add(this.meshColorB);
+            this.groupMeshColor.Controls.Add(this.labelMeshColorB);
+            this.groupMeshColor.Controls.Add(this.meshColorG);
+            this.groupMeshColor.Controls.Add(this.labelMeshColorG);
+            this.groupMeshColor.Controls.Add(this.meshColorR);
+            this.groupMeshColor.Controls.Add(this.labelMeshColorR);
+            this.groupMeshColor.Location = new System.Drawing.Point(9, 76);
+            this.groupMeshColor.Name = "groupMeshColor";
+            this.groupMeshColor.Size = new System.Drawing.Size(88, 88);
+            this.groupMeshColor.TabIndex = 8;
+            this.groupMeshColor.TabStop = false;
+            this.groupMeshColor.Text = "Diffuse";
+            // 
+            // meshColorB
+            // 
+            this.meshColorB.DecimalPlaces = 3;
+            this.meshColorB.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            131072});
+            this.meshColorB.Location = new System.Drawing.Point(24, 64);
+            this.meshColorB.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.meshColorB.Name = "meshColorB";
+            this.meshColorB.Size = new System.Drawing.Size(54, 20);
+            this.meshColorB.TabIndex = 11;
+            this.meshColorB.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.meshColorB.ValueChanged += new System.EventHandler(this.meshColor_Changed);
+            // 
+            // labelMeshColorB
+            // 
+            this.labelMeshColorB.AutoSize = true;
+            this.labelMeshColorB.Location = new System.Drawing.Point(7, 67);
+            this.labelMeshColorB.Name = "labelMeshColorB";
+            this.labelMeshColorB.Size = new System.Drawing.Size(14, 13);
+            this.labelMeshColorB.TabIndex = 10;
+            this.labelMeshColorB.Text = "B";
+            // 
+            // meshColorG
+            // 
+            this.meshColorG.DecimalPlaces = 3;
+            this.meshColorG.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            131072});
+            this.meshColorG.Location = new System.Drawing.Point(24, 40);
+            this.meshColorG.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.meshColorG.Name = "meshColorG";
+            this.meshColorG.Size = new System.Drawing.Size(54, 20);
+            this.meshColorG.TabIndex = 9;
+            this.meshColorG.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.meshColorG.ValueChanged += new System.EventHandler(this.meshColor_Changed);
+            // 
+            // labelMeshColorG
+            // 
+            this.labelMeshColorG.AutoSize = true;
+            this.labelMeshColorG.Location = new System.Drawing.Point(6, 44);
+            this.labelMeshColorG.Name = "labelMeshColorG";
+            this.labelMeshColorG.Size = new System.Drawing.Size(15, 13);
+            this.labelMeshColorG.TabIndex = 8;
+            this.labelMeshColorG.Text = "G";
+            // 
+            // meshColorR
+            // 
+            this.meshColorR.DecimalPlaces = 3;
+            this.meshColorR.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            131072});
+            this.meshColorR.Location = new System.Drawing.Point(24, 16);
+            this.meshColorR.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.meshColorR.Name = "meshColorR";
+            this.meshColorR.Size = new System.Drawing.Size(54, 20);
+            this.meshColorR.TabIndex = 7;
+            this.meshColorR.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.meshColorR.ValueChanged += new System.EventHandler(this.meshColor_Changed);
+            // 
+            // labelMeshColorR
+            // 
+            this.labelMeshColorR.AutoSize = true;
+            this.labelMeshColorR.Location = new System.Drawing.Point(6, 19);
+            this.labelMeshColorR.Name = "labelMeshColorR";
+            this.labelMeshColorR.Size = new System.Drawing.Size(15, 13);
+            this.labelMeshColorR.TabIndex = 6;
+            this.labelMeshColorR.Text = "R";
             // 
             // groupProj
             // 
@@ -810,10 +1403,10 @@ namespace Close2GL
             // 
             this.projTop.DecimalPlaces = 3;
             this.projTop.Increment = new decimal(new int[] {
-            2,
+            5,
             0,
             0,
-            65536});
+            131072});
             this.projTop.Location = new System.Drawing.Point(333, 19);
             this.projTop.Maximum = new decimal(new int[] {
             99,
@@ -849,10 +1442,10 @@ namespace Close2GL
             // 
             this.projBottom.DecimalPlaces = 3;
             this.projBottom.Increment = new decimal(new int[] {
-            2,
+            5,
             0,
             0,
-            65536});
+            131072});
             this.projBottom.Location = new System.Drawing.Point(237, 19);
             this.projBottom.Maximum = new decimal(new int[] {
             99,
@@ -888,10 +1481,10 @@ namespace Close2GL
             // 
             this.projRight.DecimalPlaces = 3;
             this.projRight.Increment = new decimal(new int[] {
-            2,
+            5,
             0,
             0,
-            65536});
+            131072});
             this.projRight.Location = new System.Drawing.Point(130, 19);
             this.projRight.Maximum = new decimal(new int[] {
             99,
@@ -927,10 +1520,10 @@ namespace Close2GL
             // 
             this.projLeft.DecimalPlaces = 3;
             this.projLeft.Increment = new decimal(new int[] {
-            2,
+            5,
             0,
             0,
-            65536});
+            131072});
             this.projLeft.Location = new System.Drawing.Point(32, 18);
             this.projLeft.Maximum = new decimal(new int[] {
             99,
@@ -970,7 +1563,7 @@ namespace Close2GL
             this.groupLightColor.Controls.Add(this.label5);
             this.groupLightColor.Controls.Add(this.numericLightColorR);
             this.groupLightColor.Controls.Add(this.label6);
-            this.groupLightColor.Location = new System.Drawing.Point(245, 96);
+            this.groupLightColor.Location = new System.Drawing.Point(767, 95);
             this.groupLightColor.Name = "groupLightColor";
             this.groupLightColor.Size = new System.Drawing.Size(88, 88);
             this.groupLightColor.TabIndex = 7;
@@ -1081,7 +1674,7 @@ namespace Close2GL
             this.groupLightPos.Controls.Add(this.labelLightPosY);
             this.groupLightPos.Controls.Add(this.numericLightPosX);
             this.groupLightPos.Controls.Add(this.labelLightPosX);
-            this.groupLightPos.Location = new System.Drawing.Point(136, 96);
+            this.groupLightPos.Location = new System.Drawing.Point(658, 95);
             this.groupLightPos.Name = "groupLightPos";
             this.groupLightPos.Size = new System.Drawing.Size(104, 88);
             this.groupLightPos.TabIndex = 5;
@@ -1172,16 +1765,6 @@ namespace Close2GL
             this.labelLightPosX.TabIndex = 0;
             this.labelLightPosX.Text = "X";
             // 
-            // checkLight
-            // 
-            this.checkLight.AutoSize = true;
-            this.checkLight.Location = new System.Drawing.Point(136, 72);
-            this.checkLight.Name = "checkLight";
-            this.checkLight.Size = new System.Drawing.Size(63, 17);
-            this.checkLight.TabIndex = 6;
-            this.checkLight.Text = "Lighting";
-            this.checkLight.UseVisualStyleBackColor = true;
-            // 
             // groupCamera
             // 
             this.groupCamera.Controls.Add(this.groupCameraUp);
@@ -1192,12 +1775,328 @@ namespace Close2GL
             this.groupCamera.Controls.Add(this.label1);
             this.groupCamera.Controls.Add(this.cameraSpeed);
             this.groupCamera.Controls.Add(this.checkLockTarget);
-            this.groupCamera.Location = new System.Drawing.Point(342, 71);
+            this.groupCamera.Location = new System.Drawing.Point(139, 71);
             this.groupCamera.Name = "groupCamera";
             this.groupCamera.Size = new System.Drawing.Size(511, 113);
             this.groupCamera.TabIndex = 4;
             this.groupCamera.TabStop = false;
             this.groupCamera.Text = "Camera";
+            // 
+            // groupCameraUp
+            // 
+            this.groupCameraUp.Controls.Add(this.cameraUpZ);
+            this.groupCameraUp.Controls.Add(this.labelCamUpZ);
+            this.groupCameraUp.Controls.Add(this.cameraUpY);
+            this.groupCameraUp.Controls.Add(this.labelCamUpY);
+            this.groupCameraUp.Controls.Add(this.cameraUpX);
+            this.groupCameraUp.Controls.Add(this.labelCamUpX);
+            this.groupCameraUp.Location = new System.Drawing.Point(400, 13);
+            this.groupCameraUp.Name = "groupCameraUp";
+            this.groupCameraUp.Size = new System.Drawing.Size(103, 94);
+            this.groupCameraUp.TabIndex = 7;
+            this.groupCameraUp.TabStop = false;
+            this.groupCameraUp.Text = "Up";
+            // 
+            // cameraUpZ
+            // 
+            this.cameraUpZ.DecimalPlaces = 3;
+            this.cameraUpZ.Location = new System.Drawing.Point(26, 68);
+            this.cameraUpZ.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.cameraUpZ.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.cameraUpZ.Name = "cameraUpZ";
+            this.cameraUpZ.Size = new System.Drawing.Size(70, 20);
+            this.cameraUpZ.TabIndex = 11;
+            this.cameraUpZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.cameraUpZ.ValueChanged += new System.EventHandler(this.CameraUp_Changed);
+            // 
+            // labelCamUpZ
+            // 
+            this.labelCamUpZ.AutoSize = true;
+            this.labelCamUpZ.Location = new System.Drawing.Point(10, 71);
+            this.labelCamUpZ.Name = "labelCamUpZ";
+            this.labelCamUpZ.Size = new System.Drawing.Size(14, 13);
+            this.labelCamUpZ.TabIndex = 10;
+            this.labelCamUpZ.Text = "Z";
+            // 
+            // cameraUpY
+            // 
+            this.cameraUpY.DecimalPlaces = 3;
+            this.cameraUpY.Location = new System.Drawing.Point(26, 44);
+            this.cameraUpY.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.cameraUpY.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.cameraUpY.Name = "cameraUpY";
+            this.cameraUpY.Size = new System.Drawing.Size(70, 20);
+            this.cameraUpY.TabIndex = 9;
+            this.cameraUpY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.cameraUpY.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cameraUpY.ValueChanged += new System.EventHandler(this.CameraUp_Changed);
+            // 
+            // labelCamUpY
+            // 
+            this.labelCamUpY.AutoSize = true;
+            this.labelCamUpY.Location = new System.Drawing.Point(9, 47);
+            this.labelCamUpY.Name = "labelCamUpY";
+            this.labelCamUpY.Size = new System.Drawing.Size(14, 13);
+            this.labelCamUpY.TabIndex = 8;
+            this.labelCamUpY.Text = "Y";
+            // 
+            // cameraUpX
+            // 
+            this.cameraUpX.DecimalPlaces = 3;
+            this.cameraUpX.Location = new System.Drawing.Point(26, 20);
+            this.cameraUpX.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.cameraUpX.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.cameraUpX.Name = "cameraUpX";
+            this.cameraUpX.Size = new System.Drawing.Size(70, 20);
+            this.cameraUpX.TabIndex = 7;
+            this.cameraUpX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.cameraUpX.ValueChanged += new System.EventHandler(this.CameraUp_Changed);
+            // 
+            // labelCamUpX
+            // 
+            this.labelCamUpX.AutoSize = true;
+            this.labelCamUpX.Location = new System.Drawing.Point(9, 23);
+            this.labelCamUpX.Name = "labelCamUpX";
+            this.labelCamUpX.Size = new System.Drawing.Size(14, 13);
+            this.labelCamUpX.TabIndex = 6;
+            this.labelCamUpX.Text = "X";
+            // 
+            // groupCameraTarget
+            // 
+            this.groupCameraTarget.Controls.Add(this.cameraTargetZ);
+            this.groupCameraTarget.Controls.Add(this.labelCamTargetZ);
+            this.groupCameraTarget.Controls.Add(this.cameraTargetY);
+            this.groupCameraTarget.Controls.Add(this.labelCamTargetY);
+            this.groupCameraTarget.Controls.Add(this.cameraTargetX);
+            this.groupCameraTarget.Controls.Add(this.labelCamTargetX);
+            this.groupCameraTarget.Location = new System.Drawing.Point(290, 12);
+            this.groupCameraTarget.Name = "groupCameraTarget";
+            this.groupCameraTarget.Size = new System.Drawing.Size(103, 94);
+            this.groupCameraTarget.TabIndex = 6;
+            this.groupCameraTarget.TabStop = false;
+            this.groupCameraTarget.Text = "Target";
+            // 
+            // cameraTargetZ
+            // 
+            this.cameraTargetZ.DecimalPlaces = 3;
+            this.cameraTargetZ.Location = new System.Drawing.Point(26, 68);
+            this.cameraTargetZ.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.cameraTargetZ.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.cameraTargetZ.Name = "cameraTargetZ";
+            this.cameraTargetZ.Size = new System.Drawing.Size(70, 20);
+            this.cameraTargetZ.TabIndex = 11;
+            this.cameraTargetZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.cameraTargetZ.ValueChanged += new System.EventHandler(this.CameraTarget_Changed);
+            // 
+            // labelCamTargetZ
+            // 
+            this.labelCamTargetZ.AutoSize = true;
+            this.labelCamTargetZ.Location = new System.Drawing.Point(10, 71);
+            this.labelCamTargetZ.Name = "labelCamTargetZ";
+            this.labelCamTargetZ.Size = new System.Drawing.Size(14, 13);
+            this.labelCamTargetZ.TabIndex = 10;
+            this.labelCamTargetZ.Text = "Z";
+            // 
+            // cameraTargetY
+            // 
+            this.cameraTargetY.DecimalPlaces = 3;
+            this.cameraTargetY.Location = new System.Drawing.Point(26, 44);
+            this.cameraTargetY.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.cameraTargetY.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.cameraTargetY.Name = "cameraTargetY";
+            this.cameraTargetY.Size = new System.Drawing.Size(70, 20);
+            this.cameraTargetY.TabIndex = 9;
+            this.cameraTargetY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.cameraTargetY.ValueChanged += new System.EventHandler(this.CameraTarget_Changed);
+            // 
+            // labelCamTargetY
+            // 
+            this.labelCamTargetY.AutoSize = true;
+            this.labelCamTargetY.Location = new System.Drawing.Point(9, 47);
+            this.labelCamTargetY.Name = "labelCamTargetY";
+            this.labelCamTargetY.Size = new System.Drawing.Size(14, 13);
+            this.labelCamTargetY.TabIndex = 8;
+            this.labelCamTargetY.Text = "Y";
+            // 
+            // cameraTargetX
+            // 
+            this.cameraTargetX.DecimalPlaces = 3;
+            this.cameraTargetX.Location = new System.Drawing.Point(26, 20);
+            this.cameraTargetX.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.cameraTargetX.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.cameraTargetX.Name = "cameraTargetX";
+            this.cameraTargetX.Size = new System.Drawing.Size(70, 20);
+            this.cameraTargetX.TabIndex = 7;
+            this.cameraTargetX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.cameraTargetX.ValueChanged += new System.EventHandler(this.CameraTarget_Changed);
+            // 
+            // labelCamTargetX
+            // 
+            this.labelCamTargetX.AutoSize = true;
+            this.labelCamTargetX.Location = new System.Drawing.Point(9, 23);
+            this.labelCamTargetX.Name = "labelCamTargetX";
+            this.labelCamTargetX.Size = new System.Drawing.Size(14, 13);
+            this.labelCamTargetX.TabIndex = 6;
+            this.labelCamTargetX.Text = "X";
+            // 
+            // groupCameraPosition
+            // 
+            this.groupCameraPosition.Controls.Add(this.cameraPosZ);
+            this.groupCameraPosition.Controls.Add(this.labelCamPosZ);
+            this.groupCameraPosition.Controls.Add(this.cameraPosY);
+            this.groupCameraPosition.Controls.Add(this.labelCamPosY);
+            this.groupCameraPosition.Controls.Add(this.cameraPosX);
+            this.groupCameraPosition.Controls.Add(this.labelCamPosX);
+            this.groupCameraPosition.Location = new System.Drawing.Point(182, 11);
+            this.groupCameraPosition.Name = "groupCameraPosition";
+            this.groupCameraPosition.Size = new System.Drawing.Size(103, 94);
+            this.groupCameraPosition.TabIndex = 5;
+            this.groupCameraPosition.TabStop = false;
+            this.groupCameraPosition.Text = "Position";
+            // 
+            // cameraPosZ
+            // 
+            this.cameraPosZ.DecimalPlaces = 3;
+            this.cameraPosZ.Location = new System.Drawing.Point(26, 68);
+            this.cameraPosZ.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.cameraPosZ.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.cameraPosZ.Name = "cameraPosZ";
+            this.cameraPosZ.Size = new System.Drawing.Size(70, 20);
+            this.cameraPosZ.TabIndex = 11;
+            this.cameraPosZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.cameraPosZ.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.cameraPosZ.ValueChanged += new System.EventHandler(this.CameraPosition_Changed);
+            // 
+            // labelCamPosZ
+            // 
+            this.labelCamPosZ.AutoSize = true;
+            this.labelCamPosZ.Location = new System.Drawing.Point(10, 71);
+            this.labelCamPosZ.Name = "labelCamPosZ";
+            this.labelCamPosZ.Size = new System.Drawing.Size(14, 13);
+            this.labelCamPosZ.TabIndex = 10;
+            this.labelCamPosZ.Text = "Z";
+            // 
+            // cameraPosY
+            // 
+            this.cameraPosY.DecimalPlaces = 3;
+            this.cameraPosY.Location = new System.Drawing.Point(26, 44);
+            this.cameraPosY.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.cameraPosY.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.cameraPosY.Name = "cameraPosY";
+            this.cameraPosY.Size = new System.Drawing.Size(70, 20);
+            this.cameraPosY.TabIndex = 9;
+            this.cameraPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.cameraPosY.ValueChanged += new System.EventHandler(this.CameraPosition_Changed);
+            // 
+            // labelCamPosY
+            // 
+            this.labelCamPosY.AutoSize = true;
+            this.labelCamPosY.Location = new System.Drawing.Point(9, 47);
+            this.labelCamPosY.Name = "labelCamPosY";
+            this.labelCamPosY.Size = new System.Drawing.Size(14, 13);
+            this.labelCamPosY.TabIndex = 8;
+            this.labelCamPosY.Text = "Y";
+            // 
+            // cameraPosX
+            // 
+            this.cameraPosX.DecimalPlaces = 3;
+            this.cameraPosX.Location = new System.Drawing.Point(26, 20);
+            this.cameraPosX.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.cameraPosX.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.cameraPosX.Name = "cameraPosX";
+            this.cameraPosX.Size = new System.Drawing.Size(70, 20);
+            this.cameraPosX.TabIndex = 7;
+            this.cameraPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.cameraPosX.ValueChanged += new System.EventHandler(this.CameraPosition_Changed);
+            // 
+            // labelCamPosX
+            // 
+            this.labelCamPosX.AutoSize = true;
+            this.labelCamPosX.Location = new System.Drawing.Point(9, 23);
+            this.labelCamPosX.Name = "labelCamPosX";
+            this.labelCamPosX.Size = new System.Drawing.Size(14, 13);
+            this.labelCamPosX.TabIndex = 6;
+            this.labelCamPosX.Text = "X";
             // 
             // buttonReset
             // 
@@ -1329,6 +2228,16 @@ namespace Close2GL
             this.radioPoints.UseVisualStyleBackColor = true;
             this.radioPoints.CheckedChanged += new System.EventHandler(this.RenderMode_Changed);
             // 
+            // checkLight
+            // 
+            this.checkLight.AutoSize = true;
+            this.checkLight.Location = new System.Drawing.Point(658, 71);
+            this.checkLight.Name = "checkLight";
+            this.checkLight.Size = new System.Drawing.Size(111, 17);
+            this.checkLight.TabIndex = 6;
+            this.checkLight.Text = "Lighting (spotlight)";
+            this.checkLight.UseVisualStyleBackColor = true;
+            // 
             // groupFace
             // 
             this.groupFace.Controls.Add(this.radioCCW);
@@ -1398,8 +2307,8 @@ namespace Close2GL
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupClose2GL);
-            this.splitContainer2.Size = new System.Drawing.Size(1504, 704);
-            this.splitContainer2.SplitterDistance = 753;
+            this.splitContainer2.Size = new System.Drawing.Size(1360, 462);
+            this.splitContainer2.SplitterDistance = 680;
             this.splitContainer2.TabIndex = 0;
             this.splitContainer2.TabStop = false;
             // 
@@ -1411,7 +2320,7 @@ namespace Close2GL
             this.groupOpenGL.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupOpenGL.Location = new System.Drawing.Point(0, 0);
             this.groupOpenGL.Name = "groupOpenGL";
-            this.groupOpenGL.Size = new System.Drawing.Size(753, 704);
+            this.groupOpenGL.Size = new System.Drawing.Size(680, 462);
             this.groupOpenGL.TabIndex = 1;
             this.groupOpenGL.TabStop = false;
             this.groupOpenGL.Text = "OpenGL";
@@ -1424,7 +2333,7 @@ namespace Close2GL
             this.glControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glControl1.Location = new System.Drawing.Point(3, 16);
             this.glControl1.Name = "glControl1";
-            this.glControl1.Size = new System.Drawing.Size(747, 685);
+            this.glControl1.Size = new System.Drawing.Size(674, 443);
             this.glControl1.TabIndex = 0;
             this.glControl1.VSync = false;
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
@@ -1440,7 +2349,7 @@ namespace Close2GL
             this.groupClose2GL.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupClose2GL.Location = new System.Drawing.Point(0, 0);
             this.groupClose2GL.Name = "groupClose2GL";
-            this.groupClose2GL.Size = new System.Drawing.Size(747, 704);
+            this.groupClose2GL.Size = new System.Drawing.Size(676, 462);
             this.groupClose2GL.TabIndex = 1;
             this.groupClose2GL.TabStop = false;
             this.groupClose2GL.Text = "Close2GL";
@@ -1453,7 +2362,7 @@ namespace Close2GL
             this.glControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glControl2.Location = new System.Drawing.Point(3, 16);
             this.glControl2.Name = "glControl2";
-            this.glControl2.Size = new System.Drawing.Size(741, 685);
+            this.glControl2.Size = new System.Drawing.Size(670, 443);
             this.glControl2.TabIndex = 1;
             this.glControl2.VSync = false;
             this.glControl2.Load += new System.EventHandler(this.glControl2_Load);
@@ -1467,460 +2376,97 @@ namespace Close2GL
             this.openFileDialog1.Filter = "Mesh files|*.in|Text files|*.txt";
             this.openFileDialog1.Title = "Open mesh file";
             // 
-            // groupCameraPosition
+            // groupBox4
             // 
-            this.groupCameraPosition.Controls.Add(this.cameraPosZ);
-            this.groupCameraPosition.Controls.Add(this.labelCamPosZ);
-            this.groupCameraPosition.Controls.Add(this.cameraPosY);
-            this.groupCameraPosition.Controls.Add(this.labelCamPosY);
-            this.groupCameraPosition.Controls.Add(this.cameraPosX);
-            this.groupCameraPosition.Controls.Add(this.labelCamPosX);
-            this.groupCameraPosition.Location = new System.Drawing.Point(182, 11);
-            this.groupCameraPosition.Name = "groupCameraPosition";
-            this.groupCameraPosition.Size = new System.Drawing.Size(103, 94);
-            this.groupCameraPosition.TabIndex = 5;
-            this.groupCameraPosition.TabStop = false;
-            this.groupCameraPosition.Text = "Position";
+            this.groupBox4.Controls.Add(this.radioButton1);
+            this.groupBox4.Controls.Add(this.radioButton2);
+            this.groupBox4.Location = new System.Drawing.Point(106, 8);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(183, 39);
+            this.groupBox4.TabIndex = 15;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Shading";
             // 
-            // cameraPosZ
+            // radioButton1
             // 
-            this.cameraPosZ.DecimalPlaces = 3;
-            this.cameraPosZ.Location = new System.Drawing.Point(26, 68);
-            this.cameraPosZ.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.cameraPosZ.Minimum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            -2147483648});
-            this.cameraPosZ.Name = "cameraPosZ";
-            this.cameraPosZ.Size = new System.Drawing.Size(70, 20);
-            this.cameraPosZ.TabIndex = 11;
-            this.cameraPosZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.cameraPosZ.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.cameraPosZ.ValueChanged += new System.EventHandler(this.CameraPosition_Changed);
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(89, 15);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(66, 17);
+            this.radioButton1.TabIndex = 3;
+            this.radioButton1.Text = "Gouraud";
+            this.radioButton1.UseVisualStyleBackColor = true;
             // 
-            // labelCamPosZ
+            // radioButton2
             // 
-            this.labelCamPosZ.AutoSize = true;
-            this.labelCamPosZ.Location = new System.Drawing.Point(10, 71);
-            this.labelCamPosZ.Name = "labelCamPosZ";
-            this.labelCamPosZ.Size = new System.Drawing.Size(14, 13);
-            this.labelCamPosZ.TabIndex = 10;
-            this.labelCamPosZ.Text = "Z";
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Checked = true;
+            this.radioButton2.Location = new System.Drawing.Point(24, 15);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(42, 17);
+            this.radioButton2.TabIndex = 2;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "Flat";
+            this.radioButton2.UseVisualStyleBackColor = true;
             // 
-            // cameraPosY
+            // button1
             // 
-            this.cameraPosY.DecimalPlaces = 3;
-            this.cameraPosY.Location = new System.Drawing.Point(26, 44);
-            this.cameraPosY.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.cameraPosY.Minimum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            -2147483648});
-            this.cameraPosY.Name = "cameraPosY";
-            this.cameraPosY.Size = new System.Drawing.Size(70, 20);
-            this.cameraPosY.TabIndex = 9;
-            this.cameraPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.cameraPosY.ValueChanged += new System.EventHandler(this.CameraPosition_Changed);
+            this.button1.Enabled = false;
+            this.button1.Location = new System.Drawing.Point(300, 16);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(87, 28);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "Load texture";
+            this.button1.UseVisualStyleBackColor = true;
             // 
-            // labelCamPosY
+            // groupBox5
             // 
-            this.labelCamPosY.AutoSize = true;
-            this.labelCamPosY.Location = new System.Drawing.Point(9, 47);
-            this.labelCamPosY.Name = "labelCamPosY";
-            this.labelCamPosY.Size = new System.Drawing.Size(14, 13);
-            this.labelCamPosY.TabIndex = 8;
-            this.labelCamPosY.Text = "Y";
+            this.groupBox5.Controls.Add(this.radioButton3);
+            this.groupBox5.Controls.Add(this.radioButton4);
+            this.groupBox5.Controls.Add(this.radioButton5);
+            this.groupBox5.Enabled = false;
+            this.groupBox5.Location = new System.Drawing.Point(297, 58);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(92, 104);
+            this.groupBox5.TabIndex = 17;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Filter";
             // 
-            // cameraPosX
+            // radioButton3
             // 
-            this.cameraPosX.DecimalPlaces = 3;
-            this.cameraPosX.Location = new System.Drawing.Point(26, 20);
-            this.cameraPosX.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.cameraPosX.Minimum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            -2147483648});
-            this.cameraPosX.Name = "cameraPosX";
-            this.cameraPosX.Size = new System.Drawing.Size(70, 20);
-            this.cameraPosX.TabIndex = 7;
-            this.cameraPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.cameraPosX.ValueChanged += new System.EventHandler(this.CameraPosition_Changed);
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Location = new System.Drawing.Point(6, 69);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(82, 17);
+            this.radioButton3.TabIndex = 2;
+            this.radioButton3.Text = "Mipmapping";
+            this.radioButton3.UseVisualStyleBackColor = true;
             // 
-            // labelCamPosX
+            // radioButton4
             // 
-            this.labelCamPosX.AutoSize = true;
-            this.labelCamPosX.Location = new System.Drawing.Point(9, 23);
-            this.labelCamPosX.Name = "labelCamPosX";
-            this.labelCamPosX.Size = new System.Drawing.Size(14, 13);
-            this.labelCamPosX.TabIndex = 6;
-            this.labelCamPosX.Text = "X";
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Location = new System.Drawing.Point(6, 47);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(59, 17);
+            this.radioButton4.TabIndex = 1;
+            this.radioButton4.Text = "Bilinear";
+            this.radioButton4.UseVisualStyleBackColor = true;
             // 
-            // groupCameraTarget
+            // radioButton5
             // 
-            this.groupCameraTarget.Controls.Add(this.cameraTargetZ);
-            this.groupCameraTarget.Controls.Add(this.labelCamTargetZ);
-            this.groupCameraTarget.Controls.Add(this.cameraTargetY);
-            this.groupCameraTarget.Controls.Add(this.labelCamTargetY);
-            this.groupCameraTarget.Controls.Add(this.cameraTargetX);
-            this.groupCameraTarget.Controls.Add(this.labelCamTargetX);
-            this.groupCameraTarget.Location = new System.Drawing.Point(290, 12);
-            this.groupCameraTarget.Name = "groupCameraTarget";
-            this.groupCameraTarget.Size = new System.Drawing.Size(103, 94);
-            this.groupCameraTarget.TabIndex = 6;
-            this.groupCameraTarget.TabStop = false;
-            this.groupCameraTarget.Text = "Target";
-            // 
-            // cameraTargetZ
-            // 
-            this.cameraTargetZ.DecimalPlaces = 3;
-            this.cameraTargetZ.Location = new System.Drawing.Point(26, 68);
-            this.cameraTargetZ.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.cameraTargetZ.Minimum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            -2147483648});
-            this.cameraTargetZ.Name = "cameraTargetZ";
-            this.cameraTargetZ.Size = new System.Drawing.Size(70, 20);
-            this.cameraTargetZ.TabIndex = 11;
-            this.cameraTargetZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.cameraTargetZ.ValueChanged += new System.EventHandler(this.CameraTarget_Changed);
-            // 
-            // labelCamTargetZ
-            // 
-            this.labelCamTargetZ.AutoSize = true;
-            this.labelCamTargetZ.Location = new System.Drawing.Point(10, 71);
-            this.labelCamTargetZ.Name = "labelCamTargetZ";
-            this.labelCamTargetZ.Size = new System.Drawing.Size(14, 13);
-            this.labelCamTargetZ.TabIndex = 10;
-            this.labelCamTargetZ.Text = "Z";
-            // 
-            // cameraTargetY
-            // 
-            this.cameraTargetY.DecimalPlaces = 3;
-            this.cameraTargetY.Location = new System.Drawing.Point(26, 44);
-            this.cameraTargetY.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.cameraTargetY.Minimum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            -2147483648});
-            this.cameraTargetY.Name = "cameraTargetY";
-            this.cameraTargetY.Size = new System.Drawing.Size(70, 20);
-            this.cameraTargetY.TabIndex = 9;
-            this.cameraTargetY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.cameraTargetY.ValueChanged += new System.EventHandler(this.CameraTarget_Changed);
-            // 
-            // labelCamTargetY
-            // 
-            this.labelCamTargetY.AutoSize = true;
-            this.labelCamTargetY.Location = new System.Drawing.Point(9, 47);
-            this.labelCamTargetY.Name = "labelCamTargetY";
-            this.labelCamTargetY.Size = new System.Drawing.Size(14, 13);
-            this.labelCamTargetY.TabIndex = 8;
-            this.labelCamTargetY.Text = "Y";
-            // 
-            // cameraTargetX
-            // 
-            this.cameraTargetX.DecimalPlaces = 3;
-            this.cameraTargetX.Location = new System.Drawing.Point(26, 20);
-            this.cameraTargetX.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.cameraTargetX.Minimum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            -2147483648});
-            this.cameraTargetX.Name = "cameraTargetX";
-            this.cameraTargetX.Size = new System.Drawing.Size(70, 20);
-            this.cameraTargetX.TabIndex = 7;
-            this.cameraTargetX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.cameraTargetX.ValueChanged += new System.EventHandler(this.CameraTarget_Changed);
-            // 
-            // labelCamTargetX
-            // 
-            this.labelCamTargetX.AutoSize = true;
-            this.labelCamTargetX.Location = new System.Drawing.Point(9, 23);
-            this.labelCamTargetX.Name = "labelCamTargetX";
-            this.labelCamTargetX.Size = new System.Drawing.Size(14, 13);
-            this.labelCamTargetX.TabIndex = 6;
-            this.labelCamTargetX.Text = "X";
-            // 
-            // groupCameraUp
-            // 
-            this.groupCameraUp.Controls.Add(this.cameraUpZ);
-            this.groupCameraUp.Controls.Add(this.labelCamUpZ);
-            this.groupCameraUp.Controls.Add(this.cameraUpY);
-            this.groupCameraUp.Controls.Add(this.labelCamUpY);
-            this.groupCameraUp.Controls.Add(this.cameraUpX);
-            this.groupCameraUp.Controls.Add(this.labelCamUpX);
-            this.groupCameraUp.Location = new System.Drawing.Point(400, 13);
-            this.groupCameraUp.Name = "groupCameraUp";
-            this.groupCameraUp.Size = new System.Drawing.Size(103, 94);
-            this.groupCameraUp.TabIndex = 7;
-            this.groupCameraUp.TabStop = false;
-            this.groupCameraUp.Text = "Up";
-            // 
-            // cameraUpZ
-            // 
-            this.cameraUpZ.DecimalPlaces = 3;
-            this.cameraUpZ.Location = new System.Drawing.Point(26, 68);
-            this.cameraUpZ.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.cameraUpZ.Minimum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            -2147483648});
-            this.cameraUpZ.Name = "cameraUpZ";
-            this.cameraUpZ.Size = new System.Drawing.Size(70, 20);
-            this.cameraUpZ.TabIndex = 11;
-            this.cameraUpZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.cameraUpZ.ValueChanged += new System.EventHandler(this.CameraUp_Changed);
-            // 
-            // labelCamUpZ
-            // 
-            this.labelCamUpZ.AutoSize = true;
-            this.labelCamUpZ.Location = new System.Drawing.Point(10, 71);
-            this.labelCamUpZ.Name = "labelCamUpZ";
-            this.labelCamUpZ.Size = new System.Drawing.Size(14, 13);
-            this.labelCamUpZ.TabIndex = 10;
-            this.labelCamUpZ.Text = "Z";
-            // 
-            // cameraUpY
-            // 
-            this.cameraUpY.DecimalPlaces = 3;
-            this.cameraUpY.Location = new System.Drawing.Point(26, 44);
-            this.cameraUpY.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.cameraUpY.Minimum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            -2147483648});
-            this.cameraUpY.Name = "cameraUpY";
-            this.cameraUpY.Size = new System.Drawing.Size(70, 20);
-            this.cameraUpY.TabIndex = 9;
-            this.cameraUpY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.cameraUpY.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.cameraUpY.ValueChanged += new System.EventHandler(this.CameraUp_Changed);
-            // 
-            // labelCamUpY
-            // 
-            this.labelCamUpY.AutoSize = true;
-            this.labelCamUpY.Location = new System.Drawing.Point(9, 47);
-            this.labelCamUpY.Name = "labelCamUpY";
-            this.labelCamUpY.Size = new System.Drawing.Size(14, 13);
-            this.labelCamUpY.TabIndex = 8;
-            this.labelCamUpY.Text = "Y";
-            // 
-            // cameraUpX
-            // 
-            this.cameraUpX.DecimalPlaces = 3;
-            this.cameraUpX.Location = new System.Drawing.Point(26, 20);
-            this.cameraUpX.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.cameraUpX.Minimum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            -2147483648});
-            this.cameraUpX.Name = "cameraUpX";
-            this.cameraUpX.Size = new System.Drawing.Size(70, 20);
-            this.cameraUpX.TabIndex = 7;
-            this.cameraUpX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.cameraUpX.ValueChanged += new System.EventHandler(this.CameraUp_Changed);
-            // 
-            // labelCamUpX
-            // 
-            this.labelCamUpX.AutoSize = true;
-            this.labelCamUpX.Location = new System.Drawing.Point(9, 23);
-            this.labelCamUpX.Name = "labelCamUpX";
-            this.labelCamUpX.Size = new System.Drawing.Size(14, 13);
-            this.labelCamUpX.TabIndex = 6;
-            this.labelCamUpX.Text = "X";
-            // 
-            // groupMesh
-            // 
-            this.groupMesh.Controls.Add(this.buttonLoadMesh);
-            this.groupMesh.Controls.Add(this.groupMeshColor);
-            this.groupMesh.Location = new System.Drawing.Point(861, 16);
-            this.groupMesh.Name = "groupMesh";
-            this.groupMesh.Size = new System.Drawing.Size(633, 168);
-            this.groupMesh.TabIndex = 9;
-            this.groupMesh.TabStop = false;
-            this.groupMesh.Text = "Mesh";
-            // 
-            // groupMeshColor
-            // 
-            this.groupMeshColor.Controls.Add(this.meshColorB);
-            this.groupMeshColor.Controls.Add(this.labelMeshColorB);
-            this.groupMeshColor.Controls.Add(this.meshColorG);
-            this.groupMeshColor.Controls.Add(this.labelMeshColorG);
-            this.groupMeshColor.Controls.Add(this.meshColorR);
-            this.groupMeshColor.Controls.Add(this.labelMeshColorR);
-            this.groupMeshColor.Location = new System.Drawing.Point(12, 64);
-            this.groupMeshColor.Name = "groupMeshColor";
-            this.groupMeshColor.Size = new System.Drawing.Size(88, 88);
-            this.groupMeshColor.TabIndex = 8;
-            this.groupMeshColor.TabStop = false;
-            this.groupMeshColor.Text = "Color";
-            // 
-            // meshColorB
-            // 
-            this.meshColorB.DecimalPlaces = 3;
-            this.meshColorB.Increment = new decimal(new int[] {
-            2,
-            0,
-            0,
-            131072});
-            this.meshColorB.Location = new System.Drawing.Point(24, 64);
-            this.meshColorB.Maximum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.meshColorB.Name = "meshColorB";
-            this.meshColorB.Size = new System.Drawing.Size(54, 20);
-            this.meshColorB.TabIndex = 11;
-            this.meshColorB.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            65536});
-            this.meshColorB.ValueChanged += new System.EventHandler(this.meshColor_Changed);
-            // 
-            // labelMeshColorB
-            // 
-            this.labelMeshColorB.AutoSize = true;
-            this.labelMeshColorB.Location = new System.Drawing.Point(7, 67);
-            this.labelMeshColorB.Name = "labelMeshColorB";
-            this.labelMeshColorB.Size = new System.Drawing.Size(14, 13);
-            this.labelMeshColorB.TabIndex = 10;
-            this.labelMeshColorB.Text = "B";
-            // 
-            // meshColorG
-            // 
-            this.meshColorG.DecimalPlaces = 3;
-            this.meshColorG.Increment = new decimal(new int[] {
-            2,
-            0,
-            0,
-            131072});
-            this.meshColorG.Location = new System.Drawing.Point(24, 40);
-            this.meshColorG.Maximum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.meshColorG.Name = "meshColorG";
-            this.meshColorG.Size = new System.Drawing.Size(54, 20);
-            this.meshColorG.TabIndex = 9;
-            this.meshColorG.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            65536});
-            this.meshColorG.ValueChanged += new System.EventHandler(this.meshColor_Changed);
-            // 
-            // labelMeshColorG
-            // 
-            this.labelMeshColorG.AutoSize = true;
-            this.labelMeshColorG.Location = new System.Drawing.Point(6, 44);
-            this.labelMeshColorG.Name = "labelMeshColorG";
-            this.labelMeshColorG.Size = new System.Drawing.Size(15, 13);
-            this.labelMeshColorG.TabIndex = 8;
-            this.labelMeshColorG.Text = "G";
-            // 
-            // meshColorR
-            // 
-            this.meshColorR.DecimalPlaces = 3;
-            this.meshColorR.Increment = new decimal(new int[] {
-            2,
-            0,
-            0,
-            131072});
-            this.meshColorR.Location = new System.Drawing.Point(24, 16);
-            this.meshColorR.Maximum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.meshColorR.Name = "meshColorR";
-            this.meshColorR.Size = new System.Drawing.Size(54, 20);
-            this.meshColorR.TabIndex = 7;
-            this.meshColorR.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            65536});
-            this.meshColorR.ValueChanged += new System.EventHandler(this.meshColor_Changed);
-            // 
-            // labelMeshColorR
-            // 
-            this.labelMeshColorR.AutoSize = true;
-            this.labelMeshColorR.Location = new System.Drawing.Point(6, 19);
-            this.labelMeshColorR.Name = "labelMeshColorR";
-            this.labelMeshColorR.Size = new System.Drawing.Size(15, 13);
-            this.labelMeshColorR.TabIndex = 6;
-            this.labelMeshColorR.Text = "R";
-            // 
-            // buttonLoadMesh
-            // 
-            this.buttonLoadMesh.Location = new System.Drawing.Point(12, 22);
-            this.buttonLoadMesh.Name = "buttonLoadMesh";
-            this.buttonLoadMesh.Size = new System.Drawing.Size(87, 28);
-            this.buttonLoadMesh.TabIndex = 9;
-            this.buttonLoadMesh.Text = "Load mesh";
-            this.buttonLoadMesh.UseVisualStyleBackColor = true;
-            this.buttonLoadMesh.Click += new System.EventHandler(this.buttonLoadMesh_Click);
+            this.radioButton5.AutoSize = true;
+            this.radioButton5.Checked = true;
+            this.radioButton5.Location = new System.Drawing.Point(6, 25);
+            this.radioButton5.Name = "radioButton5";
+            this.radioButton5.Size = new System.Drawing.Size(62, 17);
+            this.radioButton5.TabIndex = 0;
+            this.radioButton5.TabStop = true;
+            this.radioButton5.Text = "Nearest";
+            this.radioButton5.UseVisualStyleBackColor = true;
             // 
             // MainWindow
             // 
-            this.ClientSize = new System.Drawing.Size(1504, 899);
+            this.ClientSize = new System.Drawing.Size(1360, 657);
             this.Controls.Add(this.splitContainer1);
             this.Name = "MainWindow";
             this.Text = "INF01009 - Computer Graphics - Khin Baptista, 217443";
@@ -1931,6 +2477,29 @@ namespace Close2GL
             this.splitContainer1.ResumeLayout(false);
             this.groupControls.ResumeLayout(false);
             this.groupControls.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            this.groupMesh.ResumeLayout(false);
+            this.groupMesh.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.materialShine)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            this.groupMeshColor.ResumeLayout(false);
+            this.groupMeshColor.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.meshColorB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.meshColorG)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.meshColorR)).EndInit();
             this.groupProj.ResumeLayout(false);
             this.groupProj.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.projFar)).EndInit();
@@ -1951,6 +2520,21 @@ namespace Close2GL
             ((System.ComponentModel.ISupportInitialize)(this.numericLightPosX)).EndInit();
             this.groupCamera.ResumeLayout(false);
             this.groupCamera.PerformLayout();
+            this.groupCameraUp.ResumeLayout(false);
+            this.groupCameraUp.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraUpZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraUpY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraUpX)).EndInit();
+            this.groupCameraTarget.ResumeLayout(false);
+            this.groupCameraTarget.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraTargetZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraTargetY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraTargetX)).EndInit();
+            this.groupCameraPosition.ResumeLayout(false);
+            this.groupCameraPosition.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraPosZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraPosY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraPosX)).EndInit();
             this.groupPivot.ResumeLayout(false);
             this.groupPivot.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cameraSpeed)).EndInit();
@@ -1968,27 +2552,10 @@ namespace Close2GL
             this.groupOpenGL.PerformLayout();
             this.groupClose2GL.ResumeLayout(false);
             this.groupClose2GL.PerformLayout();
-            this.groupCameraPosition.ResumeLayout(false);
-            this.groupCameraPosition.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraPosZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraPosY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraPosX)).EndInit();
-            this.groupCameraTarget.ResumeLayout(false);
-            this.groupCameraTarget.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraTargetZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraTargetY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraTargetX)).EndInit();
-            this.groupCameraUp.ResumeLayout(false);
-            this.groupCameraUp.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraUpZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraUpY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cameraUpX)).EndInit();
-            this.groupMesh.ResumeLayout(false);
-            this.groupMeshColor.ResumeLayout(false);
-            this.groupMeshColor.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.meshColorB)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.meshColorG)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.meshColorR)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
