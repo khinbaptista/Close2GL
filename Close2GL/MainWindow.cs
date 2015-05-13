@@ -32,6 +32,22 @@ namespace Close2GL
         Close2GL gl;
         Camera camera;
         Mesh mesh;
+        Vector3 color;
+
+        // Light
+        bool enableLight;
+        Vector3 lightPosition;
+        Vector3 lightColor;
+        Vector3 ambientColor;
+
+        // Material
+        Vector3 ambientK;
+        Vector3 specularK;
+        float shininess;
+        bool overrideColor;
+        bool gouraud;
+
+        #region Controls
         private SplitContainer splitContainer1;
         private GroupBox groupControls;
         private SplitContainer splitContainer2;
@@ -58,17 +74,17 @@ namespace Close2GL
         private RadioButton radioLocal;
         private RadioButton radioWorld;
         private GroupBox groupLightColor;
-        private NumericUpDown numericLightColorB;
-        private Label label4;
-        private NumericUpDown numericLightColorG;
-        private Label label5;
-        private NumericUpDown numericLightColorR;
-        private Label label6;
-        private NumericUpDown numericLightPosZ;
+        private NumericUpDown lightColorB;
+        private Label labelLightColorB;
+        private NumericUpDown lightColorG;
+        private Label labelLightColorG;
+        private NumericUpDown lightColorR;
+        private Label labelLightColorR;
+        private NumericUpDown lightPosZ;
         private Label labelLightPosZ;
-        private NumericUpDown numericLightPosY;
+        private NumericUpDown lightPosY;
         private Label labelLightPosY;
-        private NumericUpDown numericLightPosX;
+        private NumericUpDown lightPosX;
         private Label labelLightPosX;
         private GroupBox groupProj;
         private OpenFileDialog openFileDialog1;
@@ -115,40 +131,40 @@ namespace Close2GL
         private NumericUpDown meshColorR;
         private Label labelMeshColorR;
         private Button buttonLoadMesh;
-        private GroupBox groupBox2;
-        private NumericUpDown numericUpDown4;
-        private Label label8;
-        private NumericUpDown numericUpDown5;
-        private Label label9;
-        private NumericUpDown numericUpDown6;
-        private Label label10;
-        private CheckBox checkBox1;
-        private GroupBox groupBox1;
-        private NumericUpDown numericUpDown1;
-        private Label label2;
-        private NumericUpDown numericUpDown2;
-        private Label label3;
-        private NumericUpDown numericUpDown3;
-        private Label label7;
-        private GroupBox groupBox3;
-        private NumericUpDown numericUpDown7;
-        private Label label11;
-        private NumericUpDown numericUpDown8;
-        private Label label12;
-        private NumericUpDown numericUpDown9;
-        private Label label13;
-        private Label label14;
+        private GroupBox groupAmbientLight;
+        private NumericUpDown ambientB;
+        private Label labelAmbientB;
+        private NumericUpDown ambientG;
+        private Label labelAmbientG;
+        private NumericUpDown ambientR;
+        private Label labelAmbientR;
+        private CheckBox checkOverrideColor;
+        private GroupBox groupAmbientK;
+        private NumericUpDown ambientKB;
+        private Label labelAmbientKB;
+        private NumericUpDown ambientKG;
+        private Label labelAmbientKG;
+        private NumericUpDown ambientKR;
+        private Label labelAmbientKR;
+        private GroupBox groupSpecular;
+        private NumericUpDown specularB;
+        private Label labelSpecularB;
+        private NumericUpDown specularG;
+        private Label labelSpecularG;
+        private NumericUpDown specularR;
+        private Label labelSpecularR;
+        private Label labelShininess;
         private NumericUpDown materialShine;
-        private GroupBox groupBox4;
-        private RadioButton radioButton1;
-        private RadioButton radioButton2;
+        private GroupBox groupShading;
+        private RadioButton radioGouraud;
+        private RadioButton radioFlat;
         private Button button1;
         private GroupBox groupBox5;
         private RadioButton radioButton3;
         private RadioButton radioButton4;
         private RadioButton radioButton5;
 
-        Vector3 meshColor;
+        #endregion
 
         public MainWindow() {
             InitializeComponent();
@@ -175,7 +191,20 @@ namespace Close2GL
             camera.Position = VectorFromControl(cameraPosX, cameraPosY, cameraPosZ);
             camera.Target = VectorFromControl(cameraTargetX, cameraTargetY, cameraTargetZ);
             camera.Up = VectorFromControl(cameraUpX, cameraUpY, cameraUpZ);
-            meshColor = VectorFromControl(meshColorR, meshColorG, meshColorB);
+            
+            color = VectorFromControl(meshColorR, meshColorG, meshColorB);
+
+            enableLight = checkLight.Checked;
+            lightPosition = VectorFromControl(lightPosX, lightPosY, lightPosZ);
+            lightColor = VectorFromControl(lightColorR, lightColorG, lightColorB);
+            ambientColor = VectorFromControl(ambientR, ambientG, ambientB);
+
+            ambientK = VectorFromControl(ambientKR, ambientKG, ambientKB);
+            specularK = VectorFromControl(specularR, specularG, specularB);
+            shininess = (float)materialShine.Value;
+
+            overrideColor = checkOverrideColor.Checked;
+            gouraud = radioGouraud.Checked;
 
             gl = new Close2GL();
         }
@@ -216,7 +245,7 @@ namespace Close2GL
             GL.LoadIdentity();
             GL.MultMatrix(ref view);
             
-            GL.Color3(meshColor);
+            GL.Color3(color);
             GL.Begin(mode);
             if (!meshLoaded) {
                 GL.Vertex3(-10.0f, -5.0f, 0.0f);
@@ -246,7 +275,7 @@ namespace Close2GL
             gl.LookAt(camera.Position, camera.Target, camera.Up);
 
 
-            gl.Color(meshColor);
+            gl.Color(color);
             gl.Begin(mode);
 
             if (!meshLoaded) {
@@ -556,7 +585,7 @@ namespace Close2GL
         }
 
         private void meshColor_Changed(object sender, EventArgs e) {
-            meshColor = VectorFromControl(meshColorR, meshColorG, meshColorB);
+            color = VectorFromControl(meshColorR, meshColorG, meshColorB);
             glControl1.Invalidate(); glControl2.Invalidate();
         }
 
@@ -565,31 +594,39 @@ namespace Close2GL
         private void InitializeComponent() {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupControls = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
-            this.label8 = new System.Windows.Forms.Label();
-            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
-            this.label9 = new System.Windows.Forms.Label();
-            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
-            this.label10 = new System.Windows.Forms.Label();
+            this.groupAmbientLight = new System.Windows.Forms.GroupBox();
+            this.ambientB = new System.Windows.Forms.NumericUpDown();
+            this.labelAmbientB = new System.Windows.Forms.Label();
+            this.ambientG = new System.Windows.Forms.NumericUpDown();
+            this.labelAmbientG = new System.Windows.Forms.Label();
+            this.ambientR = new System.Windows.Forms.NumericUpDown();
+            this.labelAmbientR = new System.Windows.Forms.Label();
             this.groupMesh = new System.Windows.Forms.GroupBox();
-            this.label14 = new System.Windows.Forms.Label();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.radioButton5 = new System.Windows.Forms.RadioButton();
+            this.button1 = new System.Windows.Forms.Button();
+            this.groupShading = new System.Windows.Forms.GroupBox();
+            this.radioGouraud = new System.Windows.Forms.RadioButton();
+            this.radioFlat = new System.Windows.Forms.RadioButton();
+            this.labelShininess = new System.Windows.Forms.Label();
             this.materialShine = new System.Windows.Forms.NumericUpDown();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
-            this.label11 = new System.Windows.Forms.Label();
-            this.numericUpDown8 = new System.Windows.Forms.NumericUpDown();
-            this.label12 = new System.Windows.Forms.Label();
-            this.numericUpDown9 = new System.Windows.Forms.NumericUpDown();
-            this.label13 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.label3 = new System.Windows.Forms.Label();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.label7 = new System.Windows.Forms.Label();
+            this.groupSpecular = new System.Windows.Forms.GroupBox();
+            this.specularB = new System.Windows.Forms.NumericUpDown();
+            this.labelSpecularB = new System.Windows.Forms.Label();
+            this.specularG = new System.Windows.Forms.NumericUpDown();
+            this.labelSpecularG = new System.Windows.Forms.Label();
+            this.specularR = new System.Windows.Forms.NumericUpDown();
+            this.labelSpecularR = new System.Windows.Forms.Label();
+            this.checkOverrideColor = new System.Windows.Forms.CheckBox();
+            this.groupAmbientK = new System.Windows.Forms.GroupBox();
+            this.ambientKB = new System.Windows.Forms.NumericUpDown();
+            this.labelAmbientKB = new System.Windows.Forms.Label();
+            this.ambientKG = new System.Windows.Forms.NumericUpDown();
+            this.labelAmbientKG = new System.Windows.Forms.Label();
+            this.ambientKR = new System.Windows.Forms.NumericUpDown();
+            this.labelAmbientKR = new System.Windows.Forms.Label();
             this.buttonLoadMesh = new System.Windows.Forms.Button();
             this.groupMeshColor = new System.Windows.Forms.GroupBox();
             this.meshColorB = new System.Windows.Forms.NumericUpDown();
@@ -612,18 +649,18 @@ namespace Close2GL
             this.projLeft = new System.Windows.Forms.NumericUpDown();
             this.labelLeft = new System.Windows.Forms.Label();
             this.groupLightColor = new System.Windows.Forms.GroupBox();
-            this.numericLightColorB = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
-            this.numericLightColorG = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
-            this.numericLightColorR = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
+            this.lightColorB = new System.Windows.Forms.NumericUpDown();
+            this.labelLightColorB = new System.Windows.Forms.Label();
+            this.lightColorG = new System.Windows.Forms.NumericUpDown();
+            this.labelLightColorG = new System.Windows.Forms.Label();
+            this.lightColorR = new System.Windows.Forms.NumericUpDown();
+            this.labelLightColorR = new System.Windows.Forms.Label();
             this.groupLightPos = new System.Windows.Forms.GroupBox();
-            this.numericLightPosZ = new System.Windows.Forms.NumericUpDown();
+            this.lightPosZ = new System.Windows.Forms.NumericUpDown();
             this.labelLightPosZ = new System.Windows.Forms.Label();
-            this.numericLightPosY = new System.Windows.Forms.NumericUpDown();
+            this.lightPosY = new System.Windows.Forms.NumericUpDown();
             this.labelLightPosY = new System.Windows.Forms.Label();
-            this.numericLightPosX = new System.Windows.Forms.NumericUpDown();
+            this.lightPosX = new System.Windows.Forms.NumericUpDown();
             this.labelLightPosX = new System.Windows.Forms.Label();
             this.groupCamera = new System.Windows.Forms.GroupBox();
             this.groupCameraUp = new System.Windows.Forms.GroupBox();
@@ -670,33 +707,27 @@ namespace Close2GL
             this.groupClose2GL = new System.Windows.Forms.GroupBox();
             this.glControl2 = new OpenTK.GLControl();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.button1 = new System.Windows.Forms.Button();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.radioButton5 = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.groupControls.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            this.groupAmbientLight.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ambientB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ambientG)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ambientR)).BeginInit();
             this.groupMesh.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupShading.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.materialShine)).BeginInit();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            this.groupSpecular.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.specularB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.specularG)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.specularR)).BeginInit();
+            this.groupAmbientK.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ambientKB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ambientKG)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ambientKR)).BeginInit();
             this.groupMeshColor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.meshColorB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.meshColorG)).BeginInit();
@@ -709,13 +740,13 @@ namespace Close2GL
             ((System.ComponentModel.ISupportInitialize)(this.projRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.projLeft)).BeginInit();
             this.groupLightColor.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericLightColorB)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericLightColorG)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericLightColorR)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightColorB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightColorG)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightColorR)).BeginInit();
             this.groupLightPos.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericLightPosZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericLightPosY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericLightPosX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightPosZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightPosY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightPosX)).BeginInit();
             this.groupCamera.SuspendLayout();
             this.groupCameraUp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cameraUpZ)).BeginInit();
@@ -739,8 +770,6 @@ namespace Close2GL
             this.splitContainer2.SuspendLayout();
             this.groupOpenGL.SuspendLayout();
             this.groupClose2GL.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -766,9 +795,10 @@ namespace Close2GL
             // 
             // groupControls
             // 
+            this.groupControls.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.groupControls.AutoSize = true;
             this.groupControls.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupControls.Controls.Add(this.groupBox2);
+            this.groupControls.Controls.Add(this.groupAmbientLight);
             this.groupControls.Controls.Add(this.groupMesh);
             this.groupControls.Controls.Add(this.groupProj);
             this.groupControls.Controls.Add(this.groupLightColor);
@@ -779,135 +809,134 @@ namespace Close2GL
             this.groupControls.Controls.Add(this.groupFace);
             this.groupControls.Controls.Add(this.checkCulling);
             this.groupControls.Controls.Add(this.checkDepth);
-            this.groupControls.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupControls.Location = new System.Drawing.Point(0, 0);
             this.groupControls.Name = "groupControls";
-            this.groupControls.Size = new System.Drawing.Size(1360, 191);
+            this.groupControls.Size = new System.Drawing.Size(1358, 203);
             this.groupControls.TabIndex = 1;
             this.groupControls.TabStop = false;
             this.groupControls.Text = "Graphics Controls";
             // 
-            // groupBox2
+            // groupAmbientLight
             // 
-            this.groupBox2.Controls.Add(this.numericUpDown4);
-            this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.numericUpDown5);
-            this.groupBox2.Controls.Add(this.label9);
-            this.groupBox2.Controls.Add(this.numericUpDown6);
-            this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Location = new System.Drawing.Point(861, 95);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(88, 88);
-            this.groupBox2.TabIndex = 10;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Ambient light";
+            this.groupAmbientLight.Controls.Add(this.ambientB);
+            this.groupAmbientLight.Controls.Add(this.labelAmbientB);
+            this.groupAmbientLight.Controls.Add(this.ambientG);
+            this.groupAmbientLight.Controls.Add(this.labelAmbientG);
+            this.groupAmbientLight.Controls.Add(this.ambientR);
+            this.groupAmbientLight.Controls.Add(this.labelAmbientR);
+            this.groupAmbientLight.Location = new System.Drawing.Point(861, 95);
+            this.groupAmbientLight.Name = "groupAmbientLight";
+            this.groupAmbientLight.Size = new System.Drawing.Size(88, 88);
+            this.groupAmbientLight.TabIndex = 10;
+            this.groupAmbientLight.TabStop = false;
+            this.groupAmbientLight.Text = "Ambient light";
             // 
-            // numericUpDown4
+            // ambientB
             // 
-            this.numericUpDown4.DecimalPlaces = 3;
-            this.numericUpDown4.Increment = new decimal(new int[] {
+            this.ambientB.DecimalPlaces = 3;
+            this.ambientB.Increment = new decimal(new int[] {
             2,
             0,
             0,
             131072});
-            this.numericUpDown4.Location = new System.Drawing.Point(24, 64);
-            this.numericUpDown4.Maximum = new decimal(new int[] {
+            this.ambientB.Location = new System.Drawing.Point(24, 64);
+            this.ambientB.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDown4.TabIndex = 11;
-            this.numericUpDown4.Value = new decimal(new int[] {
+            this.ambientB.Name = "ambientB";
+            this.ambientB.Size = new System.Drawing.Size(54, 20);
+            this.ambientB.TabIndex = 11;
+            this.ambientB.Value = new decimal(new int[] {
             5,
             0,
             0,
             65536});
             // 
-            // label8
+            // labelAmbientB
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(7, 67);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(14, 13);
-            this.label8.TabIndex = 10;
-            this.label8.Text = "B";
+            this.labelAmbientB.AutoSize = true;
+            this.labelAmbientB.Location = new System.Drawing.Point(7, 67);
+            this.labelAmbientB.Name = "labelAmbientB";
+            this.labelAmbientB.Size = new System.Drawing.Size(14, 13);
+            this.labelAmbientB.TabIndex = 10;
+            this.labelAmbientB.Text = "B";
             // 
-            // numericUpDown5
+            // ambientG
             // 
-            this.numericUpDown5.DecimalPlaces = 3;
-            this.numericUpDown5.Increment = new decimal(new int[] {
+            this.ambientG.DecimalPlaces = 3;
+            this.ambientG.Increment = new decimal(new int[] {
             2,
             0,
             0,
             131072});
-            this.numericUpDown5.Location = new System.Drawing.Point(24, 40);
-            this.numericUpDown5.Maximum = new decimal(new int[] {
+            this.ambientG.Location = new System.Drawing.Point(24, 40);
+            this.ambientG.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown5.Name = "numericUpDown5";
-            this.numericUpDown5.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDown5.TabIndex = 9;
-            this.numericUpDown5.Value = new decimal(new int[] {
+            this.ambientG.Name = "ambientG";
+            this.ambientG.Size = new System.Drawing.Size(54, 20);
+            this.ambientG.TabIndex = 9;
+            this.ambientG.Value = new decimal(new int[] {
             5,
             0,
             0,
             65536});
             // 
-            // label9
+            // labelAmbientG
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 44);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(15, 13);
-            this.label9.TabIndex = 8;
-            this.label9.Text = "G";
+            this.labelAmbientG.AutoSize = true;
+            this.labelAmbientG.Location = new System.Drawing.Point(6, 44);
+            this.labelAmbientG.Name = "labelAmbientG";
+            this.labelAmbientG.Size = new System.Drawing.Size(15, 13);
+            this.labelAmbientG.TabIndex = 8;
+            this.labelAmbientG.Text = "G";
             // 
-            // numericUpDown6
+            // ambientR
             // 
-            this.numericUpDown6.DecimalPlaces = 3;
-            this.numericUpDown6.Increment = new decimal(new int[] {
+            this.ambientR.DecimalPlaces = 3;
+            this.ambientR.Increment = new decimal(new int[] {
             2,
             0,
             0,
             131072});
-            this.numericUpDown6.Location = new System.Drawing.Point(24, 16);
-            this.numericUpDown6.Maximum = new decimal(new int[] {
+            this.ambientR.Location = new System.Drawing.Point(24, 16);
+            this.ambientR.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown6.Name = "numericUpDown6";
-            this.numericUpDown6.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDown6.TabIndex = 7;
-            this.numericUpDown6.Value = new decimal(new int[] {
+            this.ambientR.Name = "ambientR";
+            this.ambientR.Size = new System.Drawing.Size(54, 20);
+            this.ambientR.TabIndex = 7;
+            this.ambientR.Value = new decimal(new int[] {
             5,
             0,
             0,
             65536});
             // 
-            // label10
+            // labelAmbientR
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(6, 19);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(15, 13);
-            this.label10.TabIndex = 6;
-            this.label10.Text = "R";
+            this.labelAmbientR.AutoSize = true;
+            this.labelAmbientR.Location = new System.Drawing.Point(6, 19);
+            this.labelAmbientR.Name = "labelAmbientR";
+            this.labelAmbientR.Size = new System.Drawing.Size(15, 13);
+            this.labelAmbientR.TabIndex = 6;
+            this.labelAmbientR.Text = "R";
             // 
             // groupMesh
             // 
             this.groupMesh.Controls.Add(this.groupBox5);
             this.groupMesh.Controls.Add(this.button1);
-            this.groupMesh.Controls.Add(this.groupBox4);
-            this.groupMesh.Controls.Add(this.label14);
+            this.groupMesh.Controls.Add(this.groupShading);
+            this.groupMesh.Controls.Add(this.labelShininess);
             this.groupMesh.Controls.Add(this.materialShine);
-            this.groupMesh.Controls.Add(this.groupBox3);
-            this.groupMesh.Controls.Add(this.checkBox1);
-            this.groupMesh.Controls.Add(this.groupBox1);
+            this.groupMesh.Controls.Add(this.groupSpecular);
+            this.groupMesh.Controls.Add(this.checkOverrideColor);
+            this.groupMesh.Controls.Add(this.groupAmbientK);
             this.groupMesh.Controls.Add(this.buttonLoadMesh);
             this.groupMesh.Controls.Add(this.groupMeshColor);
             this.groupMesh.Location = new System.Drawing.Point(957, 12);
@@ -917,14 +946,103 @@ namespace Close2GL
             this.groupMesh.TabStop = false;
             this.groupMesh.Text = "Mesh";
             // 
-            // label14
+            // groupBox5
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(180, 56);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(52, 13);
-            this.label14.TabIndex = 14;
-            this.label14.Text = "Shininess";
+            this.groupBox5.Controls.Add(this.radioButton3);
+            this.groupBox5.Controls.Add(this.radioButton4);
+            this.groupBox5.Controls.Add(this.radioButton5);
+            this.groupBox5.Enabled = false;
+            this.groupBox5.Location = new System.Drawing.Point(297, 58);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(92, 104);
+            this.groupBox5.TabIndex = 17;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Filter";
+            // 
+            // radioButton3
+            // 
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Location = new System.Drawing.Point(6, 69);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(82, 17);
+            this.radioButton3.TabIndex = 2;
+            this.radioButton3.Text = "Mipmapping";
+            this.radioButton3.UseVisualStyleBackColor = true;
+            // 
+            // radioButton4
+            // 
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Location = new System.Drawing.Point(6, 47);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(59, 17);
+            this.radioButton4.TabIndex = 1;
+            this.radioButton4.Text = "Bilinear";
+            this.radioButton4.UseVisualStyleBackColor = true;
+            // 
+            // radioButton5
+            // 
+            this.radioButton5.AutoSize = true;
+            this.radioButton5.Checked = true;
+            this.radioButton5.Location = new System.Drawing.Point(6, 25);
+            this.radioButton5.Name = "radioButton5";
+            this.radioButton5.Size = new System.Drawing.Size(62, 17);
+            this.radioButton5.TabIndex = 0;
+            this.radioButton5.TabStop = true;
+            this.radioButton5.Text = "Nearest";
+            this.radioButton5.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Enabled = false;
+            this.button1.Location = new System.Drawing.Point(300, 16);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(87, 28);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "Load texture";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // groupShading
+            // 
+            this.groupShading.Controls.Add(this.radioGouraud);
+            this.groupShading.Controls.Add(this.radioFlat);
+            this.groupShading.Location = new System.Drawing.Point(106, 8);
+            this.groupShading.Name = "groupShading";
+            this.groupShading.Size = new System.Drawing.Size(183, 39);
+            this.groupShading.TabIndex = 15;
+            this.groupShading.TabStop = false;
+            this.groupShading.Text = "Shading";
+            // 
+            // radioGouraud
+            // 
+            this.radioGouraud.AutoSize = true;
+            this.radioGouraud.Location = new System.Drawing.Point(89, 15);
+            this.radioGouraud.Name = "radioGouraud";
+            this.radioGouraud.Size = new System.Drawing.Size(66, 17);
+            this.radioGouraud.TabIndex = 3;
+            this.radioGouraud.Text = "Gouraud";
+            this.radioGouraud.UseVisualStyleBackColor = true;
+            this.radioGouraud.CheckedChanged += new System.EventHandler(this.radioGouraud_CheckedChanged);
+            // 
+            // radioFlat
+            // 
+            this.radioFlat.AutoSize = true;
+            this.radioFlat.Checked = true;
+            this.radioFlat.Location = new System.Drawing.Point(24, 15);
+            this.radioFlat.Name = "radioFlat";
+            this.radioFlat.Size = new System.Drawing.Size(42, 17);
+            this.radioFlat.TabIndex = 2;
+            this.radioFlat.TabStop = true;
+            this.radioFlat.Text = "Flat";
+            this.radioFlat.UseVisualStyleBackColor = true;
+            // 
+            // labelShininess
+            // 
+            this.labelShininess.AutoSize = true;
+            this.labelShininess.Location = new System.Drawing.Point(180, 56);
+            this.labelShininess.Name = "labelShininess";
+            this.labelShininess.Size = new System.Drawing.Size(52, 13);
+            this.labelShininess.TabIndex = 14;
+            this.labelShininess.Text = "Shininess";
             // 
             // materialShine
             // 
@@ -943,238 +1061,246 @@ namespace Close2GL
             0,
             0,
             65536});
+            this.materialShine.ValueChanged += new System.EventHandler(this.materialShine_ValueChanged);
             // 
-            // groupBox3
+            // groupSpecular
             // 
-            this.groupBox3.Controls.Add(this.numericUpDown7);
-            this.groupBox3.Controls.Add(this.label11);
-            this.groupBox3.Controls.Add(this.numericUpDown8);
-            this.groupBox3.Controls.Add(this.label12);
-            this.groupBox3.Controls.Add(this.numericUpDown9);
-            this.groupBox3.Controls.Add(this.label13);
-            this.groupBox3.Location = new System.Drawing.Point(200, 76);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(88, 88);
-            this.groupBox3.TabIndex = 12;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Specular";
+            this.groupSpecular.Controls.Add(this.specularB);
+            this.groupSpecular.Controls.Add(this.labelSpecularB);
+            this.groupSpecular.Controls.Add(this.specularG);
+            this.groupSpecular.Controls.Add(this.labelSpecularG);
+            this.groupSpecular.Controls.Add(this.specularR);
+            this.groupSpecular.Controls.Add(this.labelSpecularR);
+            this.groupSpecular.Location = new System.Drawing.Point(200, 76);
+            this.groupSpecular.Name = "groupSpecular";
+            this.groupSpecular.Size = new System.Drawing.Size(88, 88);
+            this.groupSpecular.TabIndex = 12;
+            this.groupSpecular.TabStop = false;
+            this.groupSpecular.Text = "Specular";
             // 
-            // numericUpDown7
+            // specularB
             // 
-            this.numericUpDown7.DecimalPlaces = 3;
-            this.numericUpDown7.Increment = new decimal(new int[] {
+            this.specularB.DecimalPlaces = 3;
+            this.specularB.Increment = new decimal(new int[] {
             2,
             0,
             0,
             131072});
-            this.numericUpDown7.Location = new System.Drawing.Point(24, 64);
-            this.numericUpDown7.Maximum = new decimal(new int[] {
+            this.specularB.Location = new System.Drawing.Point(24, 64);
+            this.specularB.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown7.Name = "numericUpDown7";
-            this.numericUpDown7.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDown7.TabIndex = 11;
-            this.numericUpDown7.Value = new decimal(new int[] {
+            this.specularB.Name = "specularB";
+            this.specularB.Size = new System.Drawing.Size(54, 20);
+            this.specularB.TabIndex = 11;
+            this.specularB.Value = new decimal(new int[] {
             5,
             0,
             0,
             65536});
+            this.specularB.ValueChanged += new System.EventHandler(this.materialSpecular_Changed);
             // 
-            // label11
+            // labelSpecularB
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(7, 67);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(14, 13);
-            this.label11.TabIndex = 10;
-            this.label11.Text = "B";
+            this.labelSpecularB.AutoSize = true;
+            this.labelSpecularB.Location = new System.Drawing.Point(7, 67);
+            this.labelSpecularB.Name = "labelSpecularB";
+            this.labelSpecularB.Size = new System.Drawing.Size(14, 13);
+            this.labelSpecularB.TabIndex = 10;
+            this.labelSpecularB.Text = "B";
             // 
-            // numericUpDown8
+            // specularG
             // 
-            this.numericUpDown8.DecimalPlaces = 3;
-            this.numericUpDown8.Increment = new decimal(new int[] {
+            this.specularG.DecimalPlaces = 3;
+            this.specularG.Increment = new decimal(new int[] {
             2,
             0,
             0,
             131072});
-            this.numericUpDown8.Location = new System.Drawing.Point(24, 40);
-            this.numericUpDown8.Maximum = new decimal(new int[] {
+            this.specularG.Location = new System.Drawing.Point(24, 40);
+            this.specularG.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown8.Name = "numericUpDown8";
-            this.numericUpDown8.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDown8.TabIndex = 9;
-            this.numericUpDown8.Value = new decimal(new int[] {
+            this.specularG.Name = "specularG";
+            this.specularG.Size = new System.Drawing.Size(54, 20);
+            this.specularG.TabIndex = 9;
+            this.specularG.Value = new decimal(new int[] {
             5,
             0,
             0,
             65536});
+            this.specularG.ValueChanged += new System.EventHandler(this.materialSpecular_Changed);
             // 
-            // label12
+            // labelSpecularG
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(6, 44);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(15, 13);
-            this.label12.TabIndex = 8;
-            this.label12.Text = "G";
+            this.labelSpecularG.AutoSize = true;
+            this.labelSpecularG.Location = new System.Drawing.Point(6, 44);
+            this.labelSpecularG.Name = "labelSpecularG";
+            this.labelSpecularG.Size = new System.Drawing.Size(15, 13);
+            this.labelSpecularG.TabIndex = 8;
+            this.labelSpecularG.Text = "G";
             // 
-            // numericUpDown9
+            // specularR
             // 
-            this.numericUpDown9.DecimalPlaces = 3;
-            this.numericUpDown9.Increment = new decimal(new int[] {
+            this.specularR.DecimalPlaces = 3;
+            this.specularR.Increment = new decimal(new int[] {
             2,
             0,
             0,
             131072});
-            this.numericUpDown9.Location = new System.Drawing.Point(24, 16);
-            this.numericUpDown9.Maximum = new decimal(new int[] {
+            this.specularR.Location = new System.Drawing.Point(24, 16);
+            this.specularR.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown9.Name = "numericUpDown9";
-            this.numericUpDown9.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDown9.TabIndex = 7;
-            this.numericUpDown9.Value = new decimal(new int[] {
+            this.specularR.Name = "specularR";
+            this.specularR.Size = new System.Drawing.Size(54, 20);
+            this.specularR.TabIndex = 7;
+            this.specularR.Value = new decimal(new int[] {
             5,
             0,
             0,
             65536});
+            this.specularR.ValueChanged += new System.EventHandler(this.materialSpecular_Changed);
             // 
-            // label13
+            // labelSpecularR
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 19);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(15, 13);
-            this.label13.TabIndex = 6;
-            this.label13.Text = "R";
+            this.labelSpecularR.AutoSize = true;
+            this.labelSpecularR.Location = new System.Drawing.Point(6, 19);
+            this.labelSpecularR.Name = "labelSpecularR";
+            this.labelSpecularR.Size = new System.Drawing.Size(15, 13);
+            this.labelSpecularR.TabIndex = 6;
+            this.labelSpecularR.Text = "R";
             // 
-            // checkBox1
+            // checkOverrideColor
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(9, 55);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(92, 17);
-            this.checkBox1.TabIndex = 11;
-            this.checkBox1.Text = "Override color";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkOverrideColor.AutoSize = true;
+            this.checkOverrideColor.Location = new System.Drawing.Point(9, 55);
+            this.checkOverrideColor.Name = "checkOverrideColor";
+            this.checkOverrideColor.Size = new System.Drawing.Size(92, 17);
+            this.checkOverrideColor.TabIndex = 11;
+            this.checkOverrideColor.Text = "Override color";
+            this.checkOverrideColor.UseVisualStyleBackColor = true;
+            this.checkOverrideColor.CheckedChanged += new System.EventHandler(this.checkOverrideColor_CheckedChanged);
             // 
-            // groupBox1
+            // groupAmbientK
             // 
-            this.groupBox1.Controls.Add(this.numericUpDown1);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.numericUpDown2);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.numericUpDown3);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Location = new System.Drawing.Point(104, 76);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(88, 88);
-            this.groupBox1.TabIndex = 10;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Ambient";
+            this.groupAmbientK.Controls.Add(this.ambientKB);
+            this.groupAmbientK.Controls.Add(this.labelAmbientKB);
+            this.groupAmbientK.Controls.Add(this.ambientKG);
+            this.groupAmbientK.Controls.Add(this.labelAmbientKG);
+            this.groupAmbientK.Controls.Add(this.ambientKR);
+            this.groupAmbientK.Controls.Add(this.labelAmbientKR);
+            this.groupAmbientK.Location = new System.Drawing.Point(104, 76);
+            this.groupAmbientK.Name = "groupAmbientK";
+            this.groupAmbientK.Size = new System.Drawing.Size(88, 88);
+            this.groupAmbientK.TabIndex = 10;
+            this.groupAmbientK.TabStop = false;
+            this.groupAmbientK.Text = "Ambient";
             // 
-            // numericUpDown1
+            // ambientKB
             // 
-            this.numericUpDown1.DecimalPlaces = 3;
-            this.numericUpDown1.Increment = new decimal(new int[] {
+            this.ambientKB.DecimalPlaces = 3;
+            this.ambientKB.Increment = new decimal(new int[] {
             2,
             0,
             0,
             131072});
-            this.numericUpDown1.Location = new System.Drawing.Point(24, 64);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.ambientKB.Location = new System.Drawing.Point(24, 64);
+            this.ambientKB.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDown1.TabIndex = 11;
-            this.numericUpDown1.Value = new decimal(new int[] {
+            this.ambientKB.Name = "ambientKB";
+            this.ambientKB.Size = new System.Drawing.Size(54, 20);
+            this.ambientKB.TabIndex = 11;
+            this.ambientKB.Value = new decimal(new int[] {
             5,
             0,
             0,
             65536});
+            this.ambientKB.ValueChanged += new System.EventHandler(this.materialAmbient_Changed);
             // 
-            // label2
+            // labelAmbientKB
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 67);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(14, 13);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "B";
+            this.labelAmbientKB.AutoSize = true;
+            this.labelAmbientKB.Location = new System.Drawing.Point(7, 67);
+            this.labelAmbientKB.Name = "labelAmbientKB";
+            this.labelAmbientKB.Size = new System.Drawing.Size(14, 13);
+            this.labelAmbientKB.TabIndex = 10;
+            this.labelAmbientKB.Text = "B";
             // 
-            // numericUpDown2
+            // ambientKG
             // 
-            this.numericUpDown2.DecimalPlaces = 3;
-            this.numericUpDown2.Increment = new decimal(new int[] {
+            this.ambientKG.DecimalPlaces = 3;
+            this.ambientKG.Increment = new decimal(new int[] {
             2,
             0,
             0,
             131072});
-            this.numericUpDown2.Location = new System.Drawing.Point(24, 40);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
+            this.ambientKG.Location = new System.Drawing.Point(24, 40);
+            this.ambientKG.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDown2.TabIndex = 9;
-            this.numericUpDown2.Value = new decimal(new int[] {
+            this.ambientKG.Name = "ambientKG";
+            this.ambientKG.Size = new System.Drawing.Size(54, 20);
+            this.ambientKG.TabIndex = 9;
+            this.ambientKG.Value = new decimal(new int[] {
             5,
             0,
             0,
             65536});
+            this.ambientKG.ValueChanged += new System.EventHandler(this.materialAmbient_Changed);
             // 
-            // label3
+            // labelAmbientKG
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 44);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(15, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "G";
+            this.labelAmbientKG.AutoSize = true;
+            this.labelAmbientKG.Location = new System.Drawing.Point(6, 44);
+            this.labelAmbientKG.Name = "labelAmbientKG";
+            this.labelAmbientKG.Size = new System.Drawing.Size(15, 13);
+            this.labelAmbientKG.TabIndex = 8;
+            this.labelAmbientKG.Text = "G";
             // 
-            // numericUpDown3
+            // ambientKR
             // 
-            this.numericUpDown3.DecimalPlaces = 3;
-            this.numericUpDown3.Increment = new decimal(new int[] {
+            this.ambientKR.DecimalPlaces = 3;
+            this.ambientKR.Increment = new decimal(new int[] {
             2,
             0,
             0,
             131072});
-            this.numericUpDown3.Location = new System.Drawing.Point(24, 16);
-            this.numericUpDown3.Maximum = new decimal(new int[] {
+            this.ambientKR.Location = new System.Drawing.Point(24, 16);
+            this.ambientKR.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDown3.TabIndex = 7;
-            this.numericUpDown3.Value = new decimal(new int[] {
+            this.ambientKR.Name = "ambientKR";
+            this.ambientKR.Size = new System.Drawing.Size(54, 20);
+            this.ambientKR.TabIndex = 7;
+            this.ambientKR.Value = new decimal(new int[] {
             5,
             0,
             0,
             65536});
+            this.ambientKR.ValueChanged += new System.EventHandler(this.materialAmbient_Changed);
             // 
-            // label7
+            // labelAmbientKR
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 19);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(15, 13);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "R";
+            this.labelAmbientKR.AutoSize = true;
+            this.labelAmbientKR.Location = new System.Drawing.Point(6, 19);
+            this.labelAmbientKR.Name = "labelAmbientKR";
+            this.labelAmbientKR.Size = new System.Drawing.Size(15, 13);
+            this.labelAmbientKR.TabIndex = 6;
+            this.labelAmbientKR.Text = "R";
             // 
             // buttonLoadMesh
             // 
@@ -1557,12 +1683,12 @@ namespace Close2GL
             // 
             // groupLightColor
             // 
-            this.groupLightColor.Controls.Add(this.numericLightColorB);
-            this.groupLightColor.Controls.Add(this.label4);
-            this.groupLightColor.Controls.Add(this.numericLightColorG);
-            this.groupLightColor.Controls.Add(this.label5);
-            this.groupLightColor.Controls.Add(this.numericLightColorR);
-            this.groupLightColor.Controls.Add(this.label6);
+            this.groupLightColor.Controls.Add(this.lightColorB);
+            this.groupLightColor.Controls.Add(this.labelLightColorB);
+            this.groupLightColor.Controls.Add(this.lightColorG);
+            this.groupLightColor.Controls.Add(this.labelLightColorG);
+            this.groupLightColor.Controls.Add(this.lightColorR);
+            this.groupLightColor.Controls.Add(this.labelLightColorR);
             this.groupLightColor.Location = new System.Drawing.Point(767, 95);
             this.groupLightColor.Name = "groupLightColor";
             this.groupLightColor.Size = new System.Drawing.Size(88, 88);
@@ -1570,109 +1696,112 @@ namespace Close2GL
             this.groupLightColor.TabStop = false;
             this.groupLightColor.Text = "Light color";
             // 
-            // numericLightColorB
+            // lightColorB
             // 
-            this.numericLightColorB.DecimalPlaces = 3;
-            this.numericLightColorB.Increment = new decimal(new int[] {
+            this.lightColorB.DecimalPlaces = 3;
+            this.lightColorB.Increment = new decimal(new int[] {
             2,
             0,
             0,
             131072});
-            this.numericLightColorB.Location = new System.Drawing.Point(24, 64);
-            this.numericLightColorB.Maximum = new decimal(new int[] {
+            this.lightColorB.Location = new System.Drawing.Point(24, 64);
+            this.lightColorB.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericLightColorB.Name = "numericLightColorB";
-            this.numericLightColorB.Size = new System.Drawing.Size(54, 20);
-            this.numericLightColorB.TabIndex = 11;
-            this.numericLightColorB.Value = new decimal(new int[] {
+            this.lightColorB.Name = "lightColorB";
+            this.lightColorB.Size = new System.Drawing.Size(54, 20);
+            this.lightColorB.TabIndex = 11;
+            this.lightColorB.Value = new decimal(new int[] {
             5,
             0,
             0,
             65536});
+            this.lightColorB.ValueChanged += new System.EventHandler(this.lightColor_Changed);
             // 
-            // label4
+            // labelLightColorB
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 67);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(14, 13);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "B";
+            this.labelLightColorB.AutoSize = true;
+            this.labelLightColorB.Location = new System.Drawing.Point(7, 67);
+            this.labelLightColorB.Name = "labelLightColorB";
+            this.labelLightColorB.Size = new System.Drawing.Size(14, 13);
+            this.labelLightColorB.TabIndex = 10;
+            this.labelLightColorB.Text = "B";
             // 
-            // numericLightColorG
+            // lightColorG
             // 
-            this.numericLightColorG.DecimalPlaces = 3;
-            this.numericLightColorG.Increment = new decimal(new int[] {
+            this.lightColorG.DecimalPlaces = 3;
+            this.lightColorG.Increment = new decimal(new int[] {
             2,
             0,
             0,
             131072});
-            this.numericLightColorG.Location = new System.Drawing.Point(24, 40);
-            this.numericLightColorG.Maximum = new decimal(new int[] {
+            this.lightColorG.Location = new System.Drawing.Point(24, 40);
+            this.lightColorG.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericLightColorG.Name = "numericLightColorG";
-            this.numericLightColorG.Size = new System.Drawing.Size(54, 20);
-            this.numericLightColorG.TabIndex = 9;
-            this.numericLightColorG.Value = new decimal(new int[] {
+            this.lightColorG.Name = "lightColorG";
+            this.lightColorG.Size = new System.Drawing.Size(54, 20);
+            this.lightColorG.TabIndex = 9;
+            this.lightColorG.Value = new decimal(new int[] {
             5,
             0,
             0,
             65536});
+            this.lightColorG.ValueChanged += new System.EventHandler(this.lightColor_Changed);
             // 
-            // label5
+            // labelLightColorG
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 44);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(15, 13);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "G";
+            this.labelLightColorG.AutoSize = true;
+            this.labelLightColorG.Location = new System.Drawing.Point(6, 44);
+            this.labelLightColorG.Name = "labelLightColorG";
+            this.labelLightColorG.Size = new System.Drawing.Size(15, 13);
+            this.labelLightColorG.TabIndex = 8;
+            this.labelLightColorG.Text = "G";
             // 
-            // numericLightColorR
+            // lightColorR
             // 
-            this.numericLightColorR.DecimalPlaces = 3;
-            this.numericLightColorR.Increment = new decimal(new int[] {
+            this.lightColorR.DecimalPlaces = 3;
+            this.lightColorR.Increment = new decimal(new int[] {
             2,
             0,
             0,
             131072});
-            this.numericLightColorR.Location = new System.Drawing.Point(24, 16);
-            this.numericLightColorR.Maximum = new decimal(new int[] {
+            this.lightColorR.Location = new System.Drawing.Point(24, 16);
+            this.lightColorR.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericLightColorR.Name = "numericLightColorR";
-            this.numericLightColorR.Size = new System.Drawing.Size(54, 20);
-            this.numericLightColorR.TabIndex = 7;
-            this.numericLightColorR.Value = new decimal(new int[] {
+            this.lightColorR.Name = "lightColorR";
+            this.lightColorR.Size = new System.Drawing.Size(54, 20);
+            this.lightColorR.TabIndex = 7;
+            this.lightColorR.Value = new decimal(new int[] {
             5,
             0,
             0,
             65536});
+            this.lightColorR.ValueChanged += new System.EventHandler(this.lightColor_Changed);
             // 
-            // label6
+            // labelLightColorR
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 19);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(15, 13);
-            this.label6.TabIndex = 6;
-            this.label6.Text = "R";
+            this.labelLightColorR.AutoSize = true;
+            this.labelLightColorR.Location = new System.Drawing.Point(6, 19);
+            this.labelLightColorR.Name = "labelLightColorR";
+            this.labelLightColorR.Size = new System.Drawing.Size(15, 13);
+            this.labelLightColorR.TabIndex = 6;
+            this.labelLightColorR.Text = "R";
             // 
             // groupLightPos
             // 
-            this.groupLightPos.Controls.Add(this.numericLightPosZ);
+            this.groupLightPos.Controls.Add(this.lightPosZ);
             this.groupLightPos.Controls.Add(this.labelLightPosZ);
-            this.groupLightPos.Controls.Add(this.numericLightPosY);
+            this.groupLightPos.Controls.Add(this.lightPosY);
             this.groupLightPos.Controls.Add(this.labelLightPosY);
-            this.groupLightPos.Controls.Add(this.numericLightPosX);
+            this.groupLightPos.Controls.Add(this.lightPosX);
             this.groupLightPos.Controls.Add(this.labelLightPosX);
             this.groupLightPos.Location = new System.Drawing.Point(658, 95);
             this.groupLightPos.Name = "groupLightPos";
@@ -1681,24 +1810,25 @@ namespace Close2GL
             this.groupLightPos.TabStop = false;
             this.groupLightPos.Text = "Light position";
             // 
-            // numericLightPosZ
+            // lightPosZ
             // 
-            this.numericLightPosZ.DecimalPlaces = 3;
-            this.numericLightPosZ.Location = new System.Drawing.Point(24, 64);
-            this.numericLightPosZ.Maximum = new decimal(new int[] {
+            this.lightPosZ.DecimalPlaces = 3;
+            this.lightPosZ.Location = new System.Drawing.Point(24, 64);
+            this.lightPosZ.Maximum = new decimal(new int[] {
             999,
             0,
             0,
             0});
-            this.numericLightPosZ.Minimum = new decimal(new int[] {
+            this.lightPosZ.Minimum = new decimal(new int[] {
             999,
             0,
             0,
             -2147483648});
-            this.numericLightPosZ.Name = "numericLightPosZ";
-            this.numericLightPosZ.Size = new System.Drawing.Size(70, 20);
-            this.numericLightPosZ.TabIndex = 5;
-            this.numericLightPosZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.lightPosZ.Name = "lightPosZ";
+            this.lightPosZ.Size = new System.Drawing.Size(70, 20);
+            this.lightPosZ.TabIndex = 5;
+            this.lightPosZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.lightPosZ.ValueChanged += new System.EventHandler(this.lightPosition_Changed);
             // 
             // labelLightPosZ
             // 
@@ -1709,24 +1839,25 @@ namespace Close2GL
             this.labelLightPosZ.TabIndex = 4;
             this.labelLightPosZ.Text = "Z";
             // 
-            // numericLightPosY
+            // lightPosY
             // 
-            this.numericLightPosY.DecimalPlaces = 3;
-            this.numericLightPosY.Location = new System.Drawing.Point(24, 40);
-            this.numericLightPosY.Maximum = new decimal(new int[] {
+            this.lightPosY.DecimalPlaces = 3;
+            this.lightPosY.Location = new System.Drawing.Point(24, 40);
+            this.lightPosY.Maximum = new decimal(new int[] {
             999,
             0,
             0,
             0});
-            this.numericLightPosY.Minimum = new decimal(new int[] {
+            this.lightPosY.Minimum = new decimal(new int[] {
             999,
             0,
             0,
             -2147483648});
-            this.numericLightPosY.Name = "numericLightPosY";
-            this.numericLightPosY.Size = new System.Drawing.Size(70, 20);
-            this.numericLightPosY.TabIndex = 3;
-            this.numericLightPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.lightPosY.Name = "lightPosY";
+            this.lightPosY.Size = new System.Drawing.Size(70, 20);
+            this.lightPosY.TabIndex = 3;
+            this.lightPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.lightPosY.ValueChanged += new System.EventHandler(this.lightPosition_Changed);
             // 
             // labelLightPosY
             // 
@@ -1737,24 +1868,25 @@ namespace Close2GL
             this.labelLightPosY.TabIndex = 2;
             this.labelLightPosY.Text = "Y";
             // 
-            // numericLightPosX
+            // lightPosX
             // 
-            this.numericLightPosX.DecimalPlaces = 3;
-            this.numericLightPosX.Location = new System.Drawing.Point(24, 16);
-            this.numericLightPosX.Maximum = new decimal(new int[] {
+            this.lightPosX.DecimalPlaces = 3;
+            this.lightPosX.Location = new System.Drawing.Point(24, 16);
+            this.lightPosX.Maximum = new decimal(new int[] {
             999,
             0,
             0,
             0});
-            this.numericLightPosX.Minimum = new decimal(new int[] {
+            this.lightPosX.Minimum = new decimal(new int[] {
             999,
             0,
             0,
             -2147483648});
-            this.numericLightPosX.Name = "numericLightPosX";
-            this.numericLightPosX.Size = new System.Drawing.Size(70, 20);
-            this.numericLightPosX.TabIndex = 1;
-            this.numericLightPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.lightPosX.Name = "lightPosX";
+            this.lightPosX.Size = new System.Drawing.Size(70, 20);
+            this.lightPosX.TabIndex = 1;
+            this.lightPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.lightPosX.ValueChanged += new System.EventHandler(this.lightPosition_Changed);
             // 
             // labelLightPosX
             // 
@@ -2237,6 +2369,7 @@ namespace Close2GL
             this.checkLight.TabIndex = 6;
             this.checkLight.Text = "Lighting (spotlight)";
             this.checkLight.UseVisualStyleBackColor = true;
+            this.checkLight.CheckedChanged += new System.EventHandler(this.checkLight_CheckedChanged);
             // 
             // groupFace
             // 
@@ -2376,99 +2509,12 @@ namespace Close2GL
             this.openFileDialog1.Filter = "Mesh files|*.in|Text files|*.txt";
             this.openFileDialog1.Title = "Open mesh file";
             // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.radioButton1);
-            this.groupBox4.Controls.Add(this.radioButton2);
-            this.groupBox4.Location = new System.Drawing.Point(106, 8);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(183, 39);
-            this.groupBox4.TabIndex = 15;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Shading";
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(89, 15);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(66, 17);
-            this.radioButton1.TabIndex = 3;
-            this.radioButton1.Text = "Gouraud";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Checked = true;
-            this.radioButton2.Location = new System.Drawing.Point(24, 15);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(42, 17);
-            this.radioButton2.TabIndex = 2;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Flat";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(300, 16);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(87, 28);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "Load texture";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.radioButton3);
-            this.groupBox5.Controls.Add(this.radioButton4);
-            this.groupBox5.Controls.Add(this.radioButton5);
-            this.groupBox5.Enabled = false;
-            this.groupBox5.Location = new System.Drawing.Point(297, 58);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(92, 104);
-            this.groupBox5.TabIndex = 17;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Filter";
-            // 
-            // radioButton3
-            // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(6, 69);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(82, 17);
-            this.radioButton3.TabIndex = 2;
-            this.radioButton3.Text = "Mipmapping";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            // 
-            // radioButton4
-            // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(6, 47);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(59, 17);
-            this.radioButton4.TabIndex = 1;
-            this.radioButton4.Text = "Bilinear";
-            this.radioButton4.UseVisualStyleBackColor = true;
-            // 
-            // radioButton5
-            // 
-            this.radioButton5.AutoSize = true;
-            this.radioButton5.Checked = true;
-            this.radioButton5.Location = new System.Drawing.Point(6, 25);
-            this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(62, 17);
-            this.radioButton5.TabIndex = 0;
-            this.radioButton5.TabStop = true;
-            this.radioButton5.Text = "Nearest";
-            this.radioButton5.UseVisualStyleBackColor = true;
-            // 
             // MainWindow
             // 
             this.ClientSize = new System.Drawing.Size(1360, 657);
             this.Controls.Add(this.splitContainer1);
             this.Name = "MainWindow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "INF01009 - Computer Graphics - Khin Baptista, 217443";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
@@ -2477,24 +2523,28 @@ namespace Close2GL
             this.splitContainer1.ResumeLayout(false);
             this.groupControls.ResumeLayout(false);
             this.groupControls.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            this.groupAmbientLight.ResumeLayout(false);
+            this.groupAmbientLight.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ambientB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ambientG)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ambientR)).EndInit();
             this.groupMesh.ResumeLayout(false);
             this.groupMesh.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            this.groupShading.ResumeLayout(false);
+            this.groupShading.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.materialShine)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            this.groupSpecular.ResumeLayout(false);
+            this.groupSpecular.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.specularB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.specularG)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.specularR)).EndInit();
+            this.groupAmbientK.ResumeLayout(false);
+            this.groupAmbientK.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ambientKB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ambientKG)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ambientKR)).EndInit();
             this.groupMeshColor.ResumeLayout(false);
             this.groupMeshColor.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.meshColorB)).EndInit();
@@ -2510,14 +2560,14 @@ namespace Close2GL
             ((System.ComponentModel.ISupportInitialize)(this.projLeft)).EndInit();
             this.groupLightColor.ResumeLayout(false);
             this.groupLightColor.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericLightColorB)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericLightColorG)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericLightColorR)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightColorB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightColorG)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightColorR)).EndInit();
             this.groupLightPos.ResumeLayout(false);
             this.groupLightPos.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericLightPosZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericLightPosY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericLightPosX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightPosZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightPosY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightPosX)).EndInit();
             this.groupCamera.ResumeLayout(false);
             this.groupCamera.PerformLayout();
             this.groupCameraUp.ResumeLayout(false);
@@ -2552,12 +2602,48 @@ namespace Close2GL
             this.groupOpenGL.PerformLayout();
             this.groupClose2GL.ResumeLayout(false);
             this.groupClose2GL.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
+        }
+
+        private void checkLight_CheckedChanged(object sender, EventArgs e) {
+            enableLight = checkLight.Checked;
+            glControl1.Invalidate(); glControl2.Invalidate();
+        }
+
+        private void lightPosition_Changed(object sender, EventArgs e) {
+            lightPosition = VectorFromControl(lightPosX, lightPosY, lightPosZ);
+            glControl1.Invalidate(); glControl2.Invalidate();
+        }
+
+        private void lightColor_Changed(object sender, EventArgs e) {
+            lightColor = VectorFromControl(lightColorR, lightColorG, lightColorB);
+            glControl1.Invalidate(); glControl2.Invalidate();
+        }
+
+        private void checkOverrideColor_CheckedChanged(object sender, EventArgs e) {
+            overrideColor = checkOverrideColor.Checked;
+            glControl1.Invalidate(); glControl2.Invalidate();
+        }
+
+        private void materialAmbient_Changed(object sender, EventArgs e) {
+            ambientK = VectorFromControl(ambientKR, ambientKG, ambientKB);
+            glControl1.Invalidate(); glControl2.Invalidate();
+        }
+
+        private void materialSpecular_Changed(object sender, EventArgs e) {
+            specularK = VectorFromControl(specularR, specularG, specularB);
+            glControl1.Invalidate(); glControl2.Invalidate();
+        }
+
+        private void materialShine_ValueChanged(object sender, EventArgs e) {
+            shininess = (float)materialShine.Value;
+            glControl1.Invalidate(); glControl2.Invalidate();
+        }
+
+        private void radioGouraud_CheckedChanged(object sender, EventArgs e) {
+            gouraud = radioGouraud.Checked;
+            glControl1.Invalidate(); glControl2.Invalidate();
         }
 
     }
