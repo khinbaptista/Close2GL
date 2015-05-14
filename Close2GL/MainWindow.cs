@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Input;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace Close2GL
@@ -217,6 +218,7 @@ namespace Close2GL
             glControl1.MakeCurrent();
             SetProjection(glControl1);
             GL.ClearColor(Color.Black);
+            GL.Color3(color);
         }
 
         private void glControl2_Load(object sender, EventArgs e) {
@@ -231,6 +233,8 @@ namespace Close2GL
 
             gl.Perspective(projLeftX, projRightX, projBottomY, projTopY, projNearZ, projFarZ);
             gl.Viewport(glControl2.Width, glControl2.Height);
+
+            gl.Color(color);
         }
 
         private void glControl1_Paint(object sender, PaintEventArgs e) {
@@ -244,13 +248,22 @@ namespace Close2GL
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             GL.MultMatrix(ref view);
-            
+
+            if (enableLight) {
+                GL.Enable(EnableCap.Lighting | EnableCap.Light0);
+                UpdateLight();
+                UpdateMaterial();
+            }
+
             GL.Color3(color);
             GL.Begin(mode);
             if (!meshLoaded) {
                 GL.Vertex3(-10.0f, -5.0f, 0.0f);
+                GL.Normal3(0, 0, 1);
                 GL.Vertex3(0.0f, 5.0f, 0.0f);
+                GL.Normal3(0, 0, 1);
                 GL.Vertex3(10.0f, -5.0f, 0.0f);
+                GL.Normal3(0, 0, 1);
             }
             else {
                 mesh.Render();
@@ -268,8 +281,6 @@ namespace Close2GL
 
             glControl2.MakeCurrent();
             Matrix4 view = camera.ViewMatrix;
-
-            //GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             gl.ResetModelview();
             gl.LookAt(camera.Position, camera.Target, camera.Up);
@@ -295,9 +306,16 @@ namespace Close2GL
             if (!loadedOpenGL) return;
 
             glControl1.MakeCurrent();
-
+            
             GL.Viewport(0, 0, glControl1.Width, glControl1.Height);
             SetProjection(glControl1);
+
+            GL.Enable(EnableCap.Lighting);
+            GL.Enable(EnableCap.Light0);
+            GL.Enable(EnableCap.ColorMaterial);
+            GL.ColorMaterial(MaterialFace.FrontAndBack, ColorMaterialParameter.Diffuse);
+            UpdateLight();
+            UpdateMaterial();
         }
 
         private void glControl2_Resize(object sender, EventArgs e) {
@@ -436,12 +454,12 @@ namespace Close2GL
             }
             else GL.Disable(EnableCap.DepthTest);
 
-            glControl2.MakeCurrent();
+            /*glControl2.MakeCurrent();
             if (depthBuffer) {
                 GL.Enable(EnableCap.DepthTest);
                 GL.DepthFunc(DepthFunction.Less);
             }
-            else GL.Disable(EnableCap.DepthTest);
+            else GL.Disable(EnableCap.DepthTest);*/
 
             glControl1.Invalidate(); glControl2.Invalidate();
         }
@@ -586,6 +604,7 @@ namespace Close2GL
 
         private void meshColor_Changed(object sender, EventArgs e) {
             color = VectorFromControl(meshColorR, meshColorG, meshColorB);
+            UpdateMaterial();
             glControl1.Invalidate(); glControl2.Invalidate();
         }
 
@@ -2606,18 +2625,69 @@ namespace Close2GL
 
         }
 
+        private float[] VectorToFloatArray3(Vector3 v) {
+            return new float[] { v.X, v.Y, v.Z };
+        }
+
+        private float[] VectorToFloatArray4(Vector3 v) {
+            return new float[] { v.X, v.Y, v.Z, 1 };
+        }
+
+        private float[] VectorToFloatArray(Vector4 v) {
+            return new float[] { v.X, v.Y, v.Z, v.W };
+        }
+
+        private void UpdateLight() {
+            glControl1.MakeCurrent();
+            GL.Light(LightName.Light0, LightParameter.Position, VectorToFloatArray4(lightPosition));
+            GL.Light(LightName.Light0, LightParameter.Ambient, VectorToFloatArray4(ambientColor));
+            GL.Light(LightName.Light0, LightParameter.Diffuse, VectorToFloatArray4(lightColor));
+            GL.Light(LightName.Light0, LightParameter.Specular, Color.WhiteSmoke);
+
+            GL.LightModel(LightModelParameter.LightModelAmbient, VectorToFloatArray4(ambientColor));
+        }
+
+        private void UpdateMaterial() {
+            glControl1.MakeCurrent();
+            GL.Material(MaterialFace.Front, MaterialParameter.Ambient, VectorToFloatArray3(ambientK));
+            //GL.Material(MaterialFace.Front, MaterialParameter.Diffuse, VectorToFloatArray3(color));
+            GL.Material(MaterialFace.Front, MaterialParameter.Specular, VectorToFloatArray3(specularK));
+            GL.Material(MaterialFace.Front, MaterialParameter.Shininess, shininess);
+        }
+
         private void checkLight_CheckedChanged(object sender, EventArgs e) {
             enableLight = checkLight.Checked;
+
+            
+
+            glControl1.MakeCurrent();
+
+            if (!enableLight) {
+                GL.Disable(EnableCap.Lighting);
+
+                glControl1.Invalidate(); glControl2.Invalidate();
+                return;
+            }
+
+            GL.Enable(EnableCap.Lighting);
+            GL.Enable(EnableCap.Light0);
+            GL.Enable(EnableCap.ColorMaterial);
+            GL.ColorMaterial(MaterialFace.FrontAndBack, ColorMaterialParameter.Diffuse);
+            UpdateLight();
+            UpdateMaterial();
+
             glControl1.Invalidate(); glControl2.Invalidate();
         }
 
         private void lightPosition_Changed(object sender, EventArgs e) {
             lightPosition = VectorFromControl(lightPosX, lightPosY, lightPosZ);
+            UpdateLight();
             glControl1.Invalidate(); glControl2.Invalidate();
         }
 
         private void lightColor_Changed(object sender, EventArgs e) {
             lightColor = VectorFromControl(lightColorR, lightColorG, lightColorB);
+            UpdateLight();
             glControl1.Invalidate(); glControl2.Invalidate();
         }
 
@@ -2628,21 +2698,29 @@ namespace Close2GL
 
         private void materialAmbient_Changed(object sender, EventArgs e) {
             ambientK = VectorFromControl(ambientKR, ambientKG, ambientKB);
+            UpdateMaterial();
             glControl1.Invalidate(); glControl2.Invalidate();
         }
 
         private void materialSpecular_Changed(object sender, EventArgs e) {
             specularK = VectorFromControl(specularR, specularG, specularB);
+            UpdateMaterial();
             glControl1.Invalidate(); glControl2.Invalidate();
         }
 
         private void materialShine_ValueChanged(object sender, EventArgs e) {
             shininess = (float)materialShine.Value;
+            UpdateMaterial();
             glControl1.Invalidate(); glControl2.Invalidate();
         }
 
         private void radioGouraud_CheckedChanged(object sender, EventArgs e) {
             gouraud = radioGouraud.Checked;
+
+            glControl1.MakeCurrent();
+
+            GL.ShadeModel(gouraud ? ShadingModel.Smooth : ShadingModel.Flat);
+
             glControl1.Invalidate(); glControl2.Invalidate();
         }
 

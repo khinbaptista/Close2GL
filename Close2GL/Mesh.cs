@@ -15,13 +15,15 @@ namespace Close2GL
         public Vector3[] v;
         public Vector3[] n;
         public Vector3 facenormal;
-        public Color color;
+        public Color faceColor;
+
+        public Vector3[] vColor;
 
         public TriangleFace(){
             v = new Vector3[3];
             n = new Vector3[3];
             facenormal = new Vector3();
-            color = Color.FromArgb(128, 128, 128);
+            faceColor = Color.FromArgb(128, 128, 128);
         }
     }
 
@@ -30,6 +32,10 @@ namespace Close2GL
         private const int MAX_MATERIAL_COUNT = 10;
         private int numtris;
         private TriangleFace[] tris;
+
+        public TriangleFace[] Triangles {
+            get { return tris; }
+        }
 
         public Mesh(string file) {
             Vector3[] ambient = new Vector3[MAX_MATERIAL_COUNT],
@@ -71,10 +77,12 @@ namespace Close2GL
                     tris[face].facenormal.X = float.Parse(tokens[2]); tris[face].facenormal.Y = float.Parse(tokens[3]);
                     tris[face].facenormal.Z = float.Parse(tokens[4]);
 
-                    tris[face].color = Color.FromArgb(
+                    tris[face].faceColor = Color.FromArgb(
                             255 * (int)(diffuse[color_index[0]]).X,
                             255 * (int)(diffuse[color_index[0]]).Y,
                             255 * (int)(diffuse[color_index[0]]).Z);
+
+                    
 
                     face++;
                 }
@@ -108,6 +116,7 @@ namespace Close2GL
 
         private void Normalize() {
             float max = 0;
+            float size = 3.0f;
 
             // Scan for highest values in each axis
             foreach (TriangleFace tri in tris)
@@ -119,9 +128,11 @@ namespace Close2GL
 
             if (max == 0) return;
 
+            float scale = max / size;
+
             foreach (TriangleFace tri in tris) {
                 for (int i = 0; i < 3; i++) {
-                    tri.v[i].X /= max; tri.v[i].Y /= max; tri.v[i].Z /= max;
+                    tri.v[i].X /= scale; tri.v[i].Y /= scale; tri.v[i].Z /= scale;
                 }
             }
         }
@@ -151,7 +162,7 @@ namespace Close2GL
         public void Render2(Close2GL gl) {
             foreach (TriangleFace tri in tris)
                 for (int i = 0; i < 3; i++) {
-                    //gl.Normal(tri.n[i]);
+                    gl.Normal(tri.n[i]);
                     gl.Vertex(tri.v[i]);
                 }
         }

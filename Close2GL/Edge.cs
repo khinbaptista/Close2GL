@@ -16,6 +16,13 @@ namespace Close2GL
         public Vector4 end;
         public Vector4 direction;
 
+        public Vector3 startColor;
+        public Vector3 startNormal;
+        public Vector2 startTexCoord;
+        public Vector3 endColor;
+        public Vector3 endNormal;
+        public Vector2 endTexCoord;
+
         public bool Finished { get { return (current - start).LengthFast >= (end - start).LengthFast; } }
 
         public Edge(Vector4 start, Vector4 end, bool order = true) {
@@ -26,11 +33,18 @@ namespace Close2GL
             Start();
         }
 
+        private void Swap<T>(T a, T b) {
+            T swap = a;
+            a = b;
+            b = swap;
+        }
+
         public void Order() {
             if (start.Y > end.Y) {
-                Vector4 swap = end;
-                end = start;
-                start = swap;
+                Swap<Vector4>(start, end);
+                if (startColor != null) Swap<Vector3>(startColor, endColor);
+                if (startNormal != null) Swap<Vector3>(startNormal, endNormal);
+                if (startTexCoord != null) Swap<Vector2>(startTexCoord, endTexCoord);
             }
         }
 

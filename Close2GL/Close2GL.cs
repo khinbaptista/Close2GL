@@ -19,6 +19,7 @@ namespace Close2GL
 
         float left, right, top, bottom, near, far;
 
+        private Vector3 cameraPosition;
         private Vector3 cameraDirection;
         private bool culling;
         private FrontFaceDirection face;
@@ -27,8 +28,19 @@ namespace Close2GL
         private PrimitiveType mode;
         private bool wireframe;
 
+        private bool useLight;
+        private Vector3 lightPosition;
+        private Vector3 lightColor;
+        private Vector3 ambientLight;
+
+        private Vector3 materialColor;
+        private Vector3 materialAmbient;
+        private Vector3 materialSpecular;
+        private float materialShininess;
+
         private List<Vector4> vertices;
         private List<Vector3> normals;
+        private List<Vector3> faceNormals;
         private List<Vector3> colors;
         private List<Vector2> textureCoordinates;
 
@@ -36,7 +48,8 @@ namespace Close2GL
         private bool hasNormals;
         private bool hasTexture;
 
-        private Vector3 drawColor;
+        private bool smooth;
+        
 
         public Matrix4 Modelview {
             get { return modelview; }
@@ -58,10 +71,39 @@ namespace Close2GL
             viewport = Matrix4.Identity;
             mvp = Matrix4.Identity;
             begun = false;
+            smooth = false;
+
+            useLight = false;
+            lightPosition = Vector3.Zero;
+            lightColor = new Vector3(0.5f, 0.5f, 0.5f);
+            ambientLight = new Vector3(0.5f, 0.5f, 0.5f);
+            
+            materialColor = new Vector3(0.5f, 0.5f, 0.5f);
+            materialAmbient = new Vector3(0.5f, 0.5f, 0.5f);
+            materialSpecular = new Vector3(0.5f, 0.5f, 0.5f);
+
+            materialShininess = 0.2f;
         }
 
         public void Color(Vector3 color) {
-            drawColor = color;
+            materialColor = color;
+        }
+
+        public void EnableLight(bool value = true) {
+            useLight = value;
+        }
+
+        public void Light(Vector3 position, Vector3 color, Vector3 ambient) {
+            lightPosition = position;
+            lightColor = color;
+            ambientLight = ambient;
+        }
+
+        public void Material(Vector3 color, Vector3 ambient, Vector3 specular, float shininess) {
+            materialColor = color;
+            materialAmbient = ambient;
+            materialSpecular = specular;
+            materialShininess = shininess;
         }
 
         public void ResetModelview() { modelview = Matrix4.Identity; }
@@ -186,6 +228,7 @@ namespace Close2GL
 
             vertices = new List<Vector4>();
             normals = new List<Vector3>();
+            faceNormals = new List<Vector3>();
             textureCoordinates = new List<Vector2>();
         }
 
@@ -203,10 +246,20 @@ namespace Close2GL
             normals.Add(normal);
         }
 
+        public void FaceNormal(Vector3 normal) {
+            if (!begun) throw new Exception("Tried to load normal before call to Begin()");
+
+            faceNormals.Add(normal);
+        }
+
         public void TextureCoordinate(Vector2 textureCoordinate) {
             if (!begun) throw new Exception("Tried to load texture coordinate before call to Begin()");
 
             textureCoordinates.Add(textureCoordinate);
+        }
+
+        public void SetSmooth(bool value) {
+            smooth = value;
         }
 
         public void End() {
@@ -305,9 +358,8 @@ namespace Close2GL
             // Raster vertices as points
             if (mode == PrimitiveType.Points || mode == PrimitiveType.Triangles)
                 foreach (Vector4 v in vertices)
-                    colorBuffer[FindBufferPosition(v.X, v.Y)] = drawColor;
+                    colorBuffer[FindBufferPosition(v.X, v.Y)] = materialColor;
 
-            // Raster lines connecting vertices into triangles
             if (mode == PrimitiveType.Triangles) {
                 Edge[] edges = new Edge[3];
 
@@ -318,10 +370,12 @@ namespace Close2GL
                     edges[1] = new Edge(vertices[ordered[0]], vertices[ordered[2]]);
                     edges[2] = new Edge(vertices[ordered[1]], vertices[ordered[2]]);
 
+                    Vector3[] vertexColors;
 
+                    // Raster lines connecting vertices into triangles
                     for (int ei = 0; ei < 3; ei++) {
                         while (!edges[ei].Finished) {
-                            colorBuffer[FindBufferPosition(edges[ei].current)] = drawColor;
+                            colorBuffer[FindBufferPosition(edges[ei].current)] = materialColor;
                             edges[ei].Next();
                         }
                     }
@@ -344,10 +398,10 @@ namespace Close2GL
 
                                 if (startX <= 0 || endX <= 0) { scanline++; continue; }
 
-                                currentX = startX + 1;
+                                currentX = startX;
 
                                 while (currentX < endX) {
-                                    colorBuffer[FindBufferPosition(currentX, scanline)] = drawColor;
+                                    colorBuffer[FindBufferPosition(currentX, scanline)] = materialColor;
                                     currentX++;
                                 }
 
@@ -365,6 +419,47 @@ namespace Close2GL
             }
 
             GL.DrawPixels<Vector3>(vpW, vpH, PixelFormat.Rgb, PixelType.Float, colorBuffer);
+        }
+
+        private Vector3[] Shade(int faceIndex) {
+            if (!useLight) {
+                if (!hasColors) return new Vector3[1] { materialColor };
+                else return new Vector3[3] { colors[faceIndex], colors[faceIndex + 1], colors[faceIndex + 2] };
+            }
+            
+            Vector3[] result;
+            float[] c = new float[3] { 1, 0, 0 };   // attenuation coefficients
+            float Dl, attenuation;
+
+            if (!smooth) {  // calculate based on vertex color and face normal
+                result = new Vector3[1];
+                
+                Vector3 center = Vector4.BaryCentric(vertices[faceIndex], vertices[faceIndex + 1], vertices[faceIndex + 2], 0.5f, 0.5f).Xyz;
+                Dl = (center - cameraPosition).Length;
+                attenuation = Math.Min(1 / (c[0] + c[1] * Dl + c[2] * Dl * Dl), 1);
+
+                Vector3 V = (cameraPosition - center).Normalized();
+                Vector3 L = (lightPosition - center).Normalized();
+                Vector3 N = faceNormals[faceIndex].Normalized();
+                Vector3 R = Vector3.Zero;       // look this up in the slides
+
+                result[0] = ambientLight * materialAmbient +    // ambient
+                            attenuation * lightColor *          // common
+                            ( materialColor *  Vector3.Dot(N, L) +  // diffuse
+                            materialSpecular * (float)Math.Pow(Vector3.Dot(V, R), materialShininess)); // specular
+
+                return result;
+            }
+
+            result = new Vector3[3];
+            for (int i = 0; i < result.Length; i++) {
+                result[i] = new Vector3();
+
+                Dl = (vertices[faceIndex + i].Xyz - cameraPosition).Length;
+                attenuation = Math.Min(1 / (c[0] + c[1] * Dl + c[2] * Dl * Dl), 1);
+            }
+
+            return result;
         }
 
         private void Swap(ref int a, ref int b) {
@@ -398,7 +493,7 @@ namespace Close2GL
         }
 
         private Vector3 CalculateColor(Vector4 v) {
-            return drawColor;
+            return materialColor;
         }
 
         private void DiscardFace(int startIndex) {
