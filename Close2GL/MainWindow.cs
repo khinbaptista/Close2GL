@@ -309,13 +309,6 @@ namespace Close2GL
             
             GL.Viewport(0, 0, glControl1.Width, glControl1.Height);
             SetProjection(glControl1);
-
-            GL.Enable(EnableCap.Lighting);
-            GL.Enable(EnableCap.Light0);
-            GL.Enable(EnableCap.ColorMaterial);
-            GL.ColorMaterial(MaterialFace.FrontAndBack, ColorMaterialParameter.Diffuse);
-            UpdateLight();
-            UpdateMaterial();
         }
 
         private void glControl2_Resize(object sender, EventArgs e) {
@@ -872,6 +865,7 @@ namespace Close2GL
             0,
             0,
             65536});
+            this.ambientB.ValueChanged += new System.EventHandler(this.ambientColor_Changed);
             // 
             // labelAmbientB
             // 
@@ -904,6 +898,7 @@ namespace Close2GL
             0,
             0,
             65536});
+            this.ambientG.ValueChanged += new System.EventHandler(this.ambientColor_Changed);
             // 
             // labelAmbientG
             // 
@@ -936,6 +931,7 @@ namespace Close2GL
             0,
             0,
             65536});
+            this.ambientR.ValueChanged += new System.EventHandler(this.ambientColor_Changed);
             // 
             // labelAmbientR
             // 
@@ -1065,21 +1061,25 @@ namespace Close2GL
             // 
             // materialShine
             // 
-            this.materialShine.DecimalPlaces = 3;
-            this.materialShine.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
             this.materialShine.Location = new System.Drawing.Point(235, 53);
+            this.materialShine.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.materialShine.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             this.materialShine.Name = "materialShine";
             this.materialShine.Size = new System.Drawing.Size(52, 20);
             this.materialShine.TabIndex = 13;
             this.materialShine.Value = new decimal(new int[] {
-            2,
+            30,
             0,
             0,
-            65536});
+            0});
             this.materialShine.ValueChanged += new System.EventHandler(this.materialShine_ValueChanged);
             // 
             // groupSpecular
@@ -2642,29 +2642,32 @@ namespace Close2GL
             GL.Light(LightName.Light0, LightParameter.Position, VectorToFloatArray4(lightPosition));
             GL.Light(LightName.Light0, LightParameter.Ambient, VectorToFloatArray4(ambientColor));
             GL.Light(LightName.Light0, LightParameter.Diffuse, VectorToFloatArray4(lightColor));
-            GL.Light(LightName.Light0, LightParameter.Specular, Color.WhiteSmoke);
+            //GL.Light(LightName.Light0, LightParameter.Specular, Color.WhiteSmoke);
 
             GL.LightModel(LightModelParameter.LightModelAmbient, VectorToFloatArray4(ambientColor));
+
+            gl.Light(lightPosition, lightColor, ambientColor);
         }
 
         private void UpdateMaterial() {
             glControl1.MakeCurrent();
             GL.Material(MaterialFace.Front, MaterialParameter.Ambient, VectorToFloatArray3(ambientK));
-            //GL.Material(MaterialFace.Front, MaterialParameter.Diffuse, VectorToFloatArray3(color));
+            GL.Material(MaterialFace.Front, MaterialParameter.Diffuse, VectorToFloatArray3(color));
             GL.Material(MaterialFace.Front, MaterialParameter.Specular, VectorToFloatArray3(specularK));
             GL.Material(MaterialFace.Front, MaterialParameter.Shininess, shininess);
+
+            gl.Material(color, ambientK, specularK, shininess);
         }
 
         private void checkLight_CheckedChanged(object sender, EventArgs e) {
             enableLight = checkLight.Checked;
 
-            
+            gl.EnableLight(enableLight);
 
             glControl1.MakeCurrent();
 
             if (!enableLight) {
                 GL.Disable(EnableCap.Lighting);
-
                 glControl1.Invalidate(); glControl2.Invalidate();
                 return;
             }
@@ -2673,6 +2676,7 @@ namespace Close2GL
             GL.Enable(EnableCap.Light0);
             GL.Enable(EnableCap.ColorMaterial);
             GL.ColorMaterial(MaterialFace.FrontAndBack, ColorMaterialParameter.Diffuse);
+            GL.ShadeModel(gouraud ? ShadingModel.Smooth : ShadingModel.Flat);
             UpdateLight();
             UpdateMaterial();
 
@@ -2687,6 +2691,12 @@ namespace Close2GL
 
         private void lightColor_Changed(object sender, EventArgs e) {
             lightColor = VectorFromControl(lightColorR, lightColorG, lightColorB);
+            UpdateLight();
+            glControl1.Invalidate(); glControl2.Invalidate();
+        }
+
+        private void ambientColor_Changed(object sender, EventArgs e) {
+            ambientColor = VectorFromControl(ambientR, ambientG, ambientB);
             UpdateLight();
             glControl1.Invalidate(); glControl2.Invalidate();
         }
@@ -2720,6 +2730,7 @@ namespace Close2GL
             glControl1.MakeCurrent();
 
             GL.ShadeModel(gouraud ? ShadingModel.Smooth : ShadingModel.Flat);
+            gl.SetSmooth(gouraud);
 
             glControl1.Invalidate(); glControl2.Invalidate();
         }

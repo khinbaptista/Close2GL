@@ -49,7 +49,6 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Close2GL.cs" />
     <Compile Include="Edge.cs" />
-    <Compile Include="Fragment.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>

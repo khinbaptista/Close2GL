@@ -160,11 +160,15 @@ namespace Close2GL
         }
 
         public void Render2(Close2GL gl) {
-            foreach (TriangleFace tri in tris)
+            foreach (TriangleFace tri in tris) {
                 for (int i = 0; i < 3; i++) {
                     gl.Normal(tri.n[i]);
                     gl.Vertex(tri.v[i]);
                 }
+
+                gl.FaceNormal(tri.facenormal);
+            }
+                
         }
     }
 }
